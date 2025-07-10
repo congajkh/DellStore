@@ -1,0 +1,59 @@
+
+HƯỚNG DẪN SỬ DỤNG GIT LÀM VIỆC NHÓM - DỰ ÁN DELLSTORE
+====================================================
+
+👑 Leader: [Tên Leader]
+🔗 Repo GitHub: https://github.com/congajkh/DellStore
+
+1. CÀI ĐẶT GIT
+--------------
+- Tải Git tại: https://git-scm.com/downloads
+- Cài xong, mở Git Bash hoặc PowerShell
+
+2. CLONE PROJECT VỀ MÁY
+-------------------------
+git clone https://github.com/congajkh/DellStore.git
+cd DellStore
+
+3. TẠO NHÁNH MỚI CHO MỖI TÍNH NĂNG
+-----------------------------------
+git checkout -b feature-tenchucnang
+(ví dụ: feature-them-sanpham)
+
+4. CODE, COMMIT VÀ PUSH LÊN GITHUB
+-----------------------------------
+git add .
+git commit -m "add: chức năng thêm sản phẩm"
+git push origin feature-tenchucnang
+
+5. MỞ PULL REQUEST TRÊN GITHUB
+-------------------------------
+- Vào GitHub → nhấn nút vàng "Compare & pull request"
+- Nhập mô tả → Nhấn Create pull request
+- Chờ Leader duyệt và merge
+
+6. CẬP NHẬT CODE MỚI NHẤT VỀ MÁY
+---------------------------------
+git checkout main
+git pull origin main
+
+(Nếu đang ở nhánh khác muốn cập nhật main)
+git merge main
+
+7. QUY TẮC BẮT BUỘC
+---------------------
+- ❌ Không được push trực tiếp vào main
+- ❌ Không sửa code trên main
+- ✔ Mỗi người tạo nhánh riêng khi làm
+- ✔ Commit rõ ràng, có mô tả
+
+8. TỔNG HỢP CÂU LỆNH GIT
+--------------------------
+git clone <repo>
+git checkout -b feature-abc
+git add .
+git commit -m "nội dung"
+git push origin feature-abc
+git pull origin main
+
+==> Nếu gặp lỗi, hỏi Leader để được hỗ trợ.
