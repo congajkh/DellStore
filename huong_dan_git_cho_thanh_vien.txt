@@ -17,14 +17,14 @@ cd DellStore
 
 3. TẠO NHÁNH MỚI CHO MỖI TÍNH NĂNG
 -----------------------------------
-git checkout -b feature-tenchucnang
+git checkout -b feature-capnhatcode14/7//congdc
 (ví dụ: feature-them-sanpham)
 
 4. CODE, COMMIT VÀ PUSH LÊN GITHUB
 -----------------------------------
 git add .
 git commit -m "add: chức năng thêm sản phẩm"
-git push origin feature-tenchucnang
+git push origin feature-capnhatcode14/7//congdc
 
 5. MỞ PULL REQUEST TRÊN GITHUB
 -------------------------------

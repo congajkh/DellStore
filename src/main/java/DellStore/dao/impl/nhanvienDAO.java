@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DellStore.dao;
+package DellStore.dao.impl;
 import DellStore.entity.nhanvien;
 import DellStore.utils.XJdbc;
 import DellStore.utils.XQuery;
@@ -61,4 +61,9 @@ public class nhanvienDAO {
     public nhanvien findById(String ma_nv) {
         return XQuery.getSingleBean(nhanvien.class, findByIdSql, ma_nv);
     }
+   public void deleteByNhanVienMaNV(String maNV) {
+    String deleteByMaNV = "DELETE FROM tai_khoan WHERE manv = ?";
+    XJdbc.executeUpdate(deleteByMaNV, maNV);
+}
+
 }

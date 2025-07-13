@@ -42,5 +42,12 @@
         <artifactId>poi-ooxml</artifactId>
         <version>5.2.3</version>
     </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.netbeans.external/AbsoluteLayout -->
+<dependency>
+    <groupId>org.netbeans.external</groupId>
+    <artifactId>AbsoluteLayout</artifactId>
+    <version>RELEASE260</version>
+</dependency>
     </dependencies>
 </project>
