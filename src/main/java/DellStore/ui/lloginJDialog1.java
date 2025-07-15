@@ -4,18 +4,25 @@
  */
 package DellStore.ui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gigabyte
  */
 public class lloginJDialog1 extends javax.swing.JDialog {
-
+    private boolean loggedIn = false;
     /**
      * Creates new form lloginJDialog
      */
     public lloginJDialog1(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
+         System.out.println("==> Login dialog created!");
+    }
+     public boolean isLoggedIn() {
+        return loggedIn;
     }
 
     /**
@@ -27,28 +34,23 @@ public class lloginJDialog1 extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_tendangnhap = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txt_password = new javax.swing.JPasswordField();
         jPanel9 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btn_login = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
 
-        jLabel5.setIcon(null);
-        jLabel1.setIcon(null);
-        jLabel2.setIcon(null);
-        jLabel3.setIcon(null);
-        jLabel6.setIcon(null);
+      
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -105,12 +107,12 @@ public class lloginJDialog1 extends javax.swing.JDialog {
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txt_tendangnhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txt_tendangnhapActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
+        jPanel6.add(txt_tendangnhap, java.awt.BorderLayout.CENTER);
 
         jLabel2.setText("Tên đăng nhập");
         jPanel6.add(jLabel2, java.awt.BorderLayout.PAGE_START);
@@ -124,12 +126,12 @@ public class lloginJDialog1 extends javax.swing.JDialog {
         jLabel3.setText("Mật khẩu");
         jPanel7.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
-        jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
+        txt_password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField2ActionPerformed(evt);
+                txt_passwordActionPerformed(evt);
             }
         });
-        jPanel7.add(jPasswordField2, java.awt.BorderLayout.CENTER);
+        jPanel7.add(txt_password, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel7);
 
@@ -138,11 +140,11 @@ public class lloginJDialog1 extends javax.swing.JDialog {
         jPanel9.setBackground(new java.awt.Color(64, 198, 224));
         jPanel9.setPreferredSize(new java.awt.Dimension(400, 50));
 
-        jButton2.setText("Login");
-        jButton2.setPreferredSize(new java.awt.Dimension(250, 30));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_login.setText("Login");
+        btn_login.setPreferredSize(new java.awt.Dimension(250, 30));
+        btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_loginActionPerformed(evt);
             }
         });
 
@@ -152,14 +154,14 @@ public class lloginJDialog1 extends javax.swing.JDialog {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap(78, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGap(0, 7, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel1.add(jPanel9);
@@ -188,67 +190,53 @@ public class lloginJDialog1 extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txt_tendangnhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tendangnhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txt_tendangnhapActionPerformed
 
-    private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
+    private void txt_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_passwordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField2ActionPerformed
+    }//GEN-LAST:event_txt_passwordActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
+     String user = txt_tendangnhap.getText().trim();
+    String pass = new String(txt_password.getPassword()).trim();
+
+    DellStore.dao.impl.TaiKhoanDAO dao = new DellStore.dao.impl.TaiKhoanDAO();
+    if (dao.checkLogin(user, pass)) {
+        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+        loggedIn = true;
+        dispose(); // Thoát khỏi dialog
+    } else {
+        JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!");
+    }
+    }//GEN-LAST:event_btn_loginActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(lloginJDialog1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(lloginJDialog1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(lloginJDialog1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(lloginJDialog1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+public static void main(String args[]) {
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            lloginJDialog1 dialog = new lloginJDialog1(new javax.swing.JFrame(), true);
+            dialog.setVisible(true);
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                lloginJDialog1 dialog = new lloginJDialog1(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+            if (dialog.isLoggedIn()) {
+                new Form1().setVisible(true);
+            } else {
+                System.exit(0);
             }
-        });
-    }
+        }
+    });
+}
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btn_login;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -258,7 +246,7 @@ public class lloginJDialog1 extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_tendangnhap;
     // End of variables declaration//GEN-END:variables
 }

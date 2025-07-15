@@ -4,6 +4,7 @@
  */
 package DellStore.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class sanpham {
-    
+public class ocung {
+    int id;
+    String ten;
+   String dung_luong;
+    String loai;
+   int trang_thai;
+     @Override
+    public String toString() {
+        return dung_luong + " " + loai; // hoặc: return dungLuong + " " + loai;
+    }
 }

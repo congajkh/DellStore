@@ -8,13 +8,13 @@ CREATE TABLE card (
   loai NVARCHAR(50),
   trang_thai INT
 );
-
+drop table chi_tiet_san_pham;
 CREATE TABLE chi_tiet_san_pham (
   id INT IDENTITY(1,1) PRIMARY KEY,
   san_pham_id INT,
   ram_id INT,
   cpu_id INT,
-  ssd_id INT,
+  ocung_id INT,
   card_id INT,
   man_hinh_id INT,
   gia_nhap DECIMAL(18,2),
@@ -22,6 +22,40 @@ CREATE TABLE chi_tiet_san_pham (
   so_luong INT,
   trang_thai INT
 );
+SELECT 
+    f.name AS constraint_name,
+    OBJECT_NAME(f.parent_object_id) AS referencing_table,
+    COL_NAME(fc.parent_object_id, fc.parent_column_id) AS referencing_column
+FROM 
+    sys.foreign_keys AS f
+INNER JOIN 
+    sys.foreign_key_columns AS fc ON f.object_id = fc.constraint_object_id
+WHERE 
+    OBJECT_NAME(f.referenced_object_id) = 'chi_tiet_san_pham';
+ALTER TABLE ct_dot_giam_gia DROP CONSTRAINT FK_ct_dot_giam_gia_chi_tiet_sp;
+ALTER TABLE hinh_anh DROP CONSTRAINT FK_hinh_anh_chi_tiet_sp;
+ALTER TABLE serial DROP CONSTRAINT FK_serial_chi_tiet_san_pham;
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_sp FOREIGN KEY (san_pham_id) REFERENCES san_pham(id),
+    CONSTRAINT FK_ctsp_ram FOREIGN KEY (ram_id) REFERENCES ram(id),
+    CONSTRAINT FK_ctsp_cpu FOREIGN KEY (cpu_id) REFERENCES cpu(id),
+    CONSTRAINT FK_ctsp_ocung FOREIGN KEY (ocung_id) REFERENCES ocung(id),
+    CONSTRAINT FK_ctsp_card FOREIGN KEY (card_id) REFERENCES card(id),
+    CONSTRAINT FK_ctsp_mh FOREIGN KEY (man_hinh_id) REFERENCES man_hinh(id);
+
+ALTER TABLE ct_dot_giam_gia
+ADD CONSTRAINT FK_ct_dot_giam_gia_chi_tiet_sp
+FOREIGN KEY (chi_tiet_sp_id) REFERENCES chi_tiet_san_pham(id);
+
+ALTER TABLE hinh_anh
+ADD CONSTRAINT FK_hinh_anh_chi_tiet_sp
+FOREIGN KEY (chi_tiet_sp_id) REFERENCES chi_tiet_san_pham(id);
+
+ALTER TABLE serial
+ADD CONSTRAINT FK_serial_chi_tiet_san_pham
+FOREIGN KEY (chi_tiet_sp_id) REFERENCES chi_tiet_san_pham(id);
+
 
 CREATE TABLE cpu (
   id INT IDENTITY(1,1) PRIMARY KEY,
@@ -241,7 +275,7 @@ CREATE TABLE thong_ke_doanh_thu (
 ALTER TABLE chi_tiet_san_pham
   ADD CONSTRAINT FK_chi_tiet_san_pham_san_pham FOREIGN KEY (san_pham_id) REFERENCES san_pham(id);
 GO
-
+//lat sua
 ALTER TABLE chi_tiet_san_pham
   ADD CONSTRAINT FK_chi_tiet_san_pham_ram FOREIGN KEY (ram_id) REFERENCES ram(id);
 GO
@@ -335,3 +369,109 @@ GO
 ALTER TABLE tai_khoan DROP CONSTRAINT FK_tai_khoan_nhan_vien;
 ALTER TABLE tai_khoan DROP COLUMN nhan_vien_id;
 ALTER TABLE tai_khoan ADD manv NVARCHAR(20);
+
+EXEC sp_rename 'ssd', 'ocung';
+INSERT INTO card (ten, loai, trang_thai) VALUES
+(N'NVIDIA GTX 1050', N'Rời', 1),
+(N'NVIDIA GTX 1650', N'Rời', 1),
+(N'NVIDIA RTX 2060', N'Rời', 1),
+(N'NVIDIA RTX 3060', N'Rời', 1),
+(N'NVIDIA RTX 4060', N'Rời', 1),
+(N'Intel UHD 620', N'Tích hợp', 1),
+(N'Intel Iris Xe', N'Tích hợp', 1),
+(N'AMD Radeon RX 560', N'Rời', 1),
+(N'AMD Radeon RX 6600M', N'Rời', 1),
+(N'NVIDIA Quadro T1000', N'Rời', 1);
+
+INSERT INTO cpu (ten, toc_do, loai, trang_thai) VALUES
+(N'Intel Core i5-10300H', N'2.5GHz', N'Laptop', 1),
+(N'Intel Core i7-10750H', N'2.6GHz', N'Laptop', 1),
+(N'Intel Core i9-11900H', N'3.3GHz', N'Laptop', 1),
+(N'AMD Ryzen 5 5600H', N'3.3GHz', N'Laptop', 1),
+(N'AMD Ryzen 7 5800H', N'3.2GHz', N'Laptop', 1),
+(N'Intel Core i3-1115G4', N'3.0GHz', N'Laptop', 1),
+(N'Intel Core i5-1240P', N'3.3GHz', N'Laptop', 1),
+(N'AMD Ryzen 9 5900HX', N'3.3GHz', N'Laptop', 1),
+(N'Intel Core i9-12900HK', N'3.6GHz', N'Laptop', 1),
+(N'Intel Xeon E-2286M', N'2.4GHz', N'Mobile Workstation', 1);
+
+ALTER TABLE chi_tiet_san_pham
+DROP CONSTRAINT FK_chi_tiet_san_pham_ram;
+
+DROP TABLE ram;
+
+CREATE TABLE ram (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  ten NVARCHAR(50),
+  dung_luong NVARCHAR(50),
+  loai NVARCHAR(50),
+  trang_thai INT
+);
+INSERT INTO ram (ten, dung_luong, loai, trang_thai) VALUES
+( N'Kingston 8GB DDR4', N'8GB', N'DDR4', 1),
+( N'Corsair 16GB DDR4', N'16GB', N'DDR4', 1),
+( N'G.Skill 32GB DDR4', N'32GB', N'DDR4', 1),
+( N'ADATA 4GB DDR4', N'4GB', N'DDR4', 1),
+( N'Crucial 8GB DDR4', N'8GB', N'DDR4', 1),
+( N'Samsung 16GB DDR4', N'16GB', N'DDR4', 1),
+( N'Teamgroup 32GB DDR4', N'32GB', N'DDR4', 1),
+( N'Kingston Fury 8GB DDR5', N'8GB', N'DDR5', 1),
+( N'Corsair Vengeance 16GB DDR5', N'16GB', N'DDR5', 1),
+( N'G.Skill Ripjaws 32GB DDR5', N'32GB', N'DDR5', 1);
+
+INSERT INTO ssd (ten, dung_luong, loai, trang_thai) VALUES
+(N'Samsung EVO 256GB', 256, N'Nvme', 1),
+(N'Samsung EVO 512GB', 512, N'Nvme', 1),
+(N'WD Black 1TB', 1024, N'Nvme', 1),
+(N'Kingston A2000 512GB', 512, N'Nvme', 1),
+(N'Crucial MX500 250GB', 250, N'SATA', 1),
+(N'Crucial MX500 1TB', 1024, N'SATA', 1),
+(N'SanDisk Ultra 480GB', 480, N'SATA', 1),
+(N'ADATA XPG 512GB', 512, N'Nvme', 1),
+(N'Intel 660p 1TB', 1024, N'Nvme', 1),
+(N'Lexar NM610 256GB', 256, N'Nvme', 1);
+
+-- Bước 1: Đổi tên bảng cũ tạm thời để backup
+EXEC sp_rename 'ocung', 'ocung_old';
+
+-- Bước 2: Tạo lại bảng mới đúng thứ tự cột
+CREATE TABLE ocung (
+  id INT PRIMARY KEY,
+  ten NVARCHAR(50),           -- 👈 Cột 'ten' đứng ngay sau 'id'
+  dung_luong NVARCHAR(50),
+  loai NVARCHAR(50),
+  trang_thai INT
+);
+
+-- Bước 3: Chèn lại dữ liệu nếu cần
+-- (Nếu bảng cũ có cột 'ten', thì copy từ đó. Nếu không thì thêm giá trị mặc định)
+INSERT INTO ocung (id, ten, dung_luong, loai, trang_thai)
+SELECT id, NULL AS ten, dung_luong, loai, trang_thai
+FROM ocung_old;
+
+INSERT INTO ocung (id, ten, dung_luong, loai, trang_thai) VALUES
+(1, N'Kingston 8GB DDR4', N'8GB', N'DDR4', 1),
+(2, N'Corsair 16GB DDR4', N'16GB', N'DDR4', 1),
+(3, N'G.Skill 32GB DDR4', N'32GB', N'DDR4', 1),
+(4, N'ADATA 4GB DDR4', N'4GB', N'DDR4', 1),
+(5, N'Crucial 8GB DDR4', N'8GB', N'DDR4', 1),
+(6, N'Samsung 16GB DDR4', N'16GB', N'DDR4', 1),
+(7, N'Teamgroup 32GB DDR4', N'32GB', N'DDR4', 1),
+(8, N'Kingston Fury 8GB DDR5', N'8GB', N'DDR5', 1),
+(9, N'Corsair Vengeance 16GB DDR5', N'16GB', N'DDR5', 1),
+(10, N'G.Skill Ripjaws 32GB DDR5', N'32GB', N'DDR5', 1);
+
+
+INSERT INTO hang (ten, trang_thai) VALUES
+(N'Dell', 1);
+DELETE FROM cpu;
+DELETE FROM ram;
+DELETE FROM ocung;
+SELECT * from cpu;
+INSERT INTO cpu (ten, toc_do, loai, trang_thai) VALUES
+('Intel Core i3', '3.2GHz', 'Thế hệ 10', 1),
+('Intel Core i5', '3.8GHz', 'Thế hệ 11', 1),
+('Intel Core i9', '5.0GHz', 'Thế hệ 12', 1);
+
+select * FROM tai_khoan;
+select * from CPU;

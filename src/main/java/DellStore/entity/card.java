@@ -19,6 +19,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class sanpham {
-    
+public class card {
+    int id;
+    String ten;
+    String loai;
+    int trang_thai; 
+      @Override
+    public String toString() {
+        return ten;
+    }
 }

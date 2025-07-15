@@ -18,22 +18,11 @@ public class XJdbc {
 
     private static Connection connection;
 
-    /**
-     * Mở kết nối nếu chưa mở hoặc đã đóng
-     *
-     * @return Kết nối đã sẵn sàng
-     */
     public static Connection openConnection() {
         var driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
         var dburl = "jdbc:sqlserver://localhost;database=DellStore;encrypt=true;trustServerCertificate=true;";
         var username = "sa";
         var password = "Dochicong231205";
-//mysql
-//var driver = "com.mysql.cj.jdbc.Driver";
-//var dburl = "jdbc:mysql://localhost:3306/dellstore?useSSL=false&serverTimezone=UTC";
-//var username = "root";
-//var password = ""; // hoặc mật khẩu của bạn nếu đã đổi
-
         try {
             if (!XJdbc.isReady()) {
                 Class.forName(driver);
