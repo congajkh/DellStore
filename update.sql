@@ -16,10 +16,9 @@ CREATE TABLE chi_tiet_san_pham (
   cpu_id INT,
   ocung_id INT,
   card_id INT,
-  man_hinh_id INT,
-  gia_nhap DECIMAL(18,2),
+  hang_id INT,
+  serial NVARCHAR(50),
   gia_ban DECIMAL(18,2),
-  so_luong INT,
   trang_thai INT
 );
 SELECT 
@@ -475,3 +474,164 @@ INSERT INTO cpu (ten, toc_do, loai, trang_thai) VALUES
 
 select * FROM tai_khoan;
 select * from CPU;
+select * from ram;
+select * from ocung;
+select * from card;
+select * from chi_tiet_san_pham;
+
+
+ALTER TABLE ct_dot_giam_gia DROP CONSTRAINT FK_ct_dot_giam_gia_chi_tiet_sp;
+ALTER TABLE hinh_anh DROP CONSTRAINT FK_hinh_anh_chi_tiet_sp;
+ALTER TABLE serial DROP CONSTRAINT FK_serial_chi_tiet_san_pham;
+drop TABLE chi_tiet_san_pham;
+
+CREATE TABLE chi_tiet_san_pham (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  san_pham_id INT,
+  ram_id INT,
+  cpu_id INT,
+  ocung_id INT,
+  card_id INT,
+  hang_id INT,         -- Thêm nếu hãng nằm riêng
+  serial NVARCHAR(100),
+  gia_ban DECIMAL(18,2),
+  trang_thai INT
+);
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_sanpham FOREIGN KEY (san_pham_id) REFERENCES san_pham(id);
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_ram FOREIGN KEY (ram_id) REFERENCES ram(id);
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_cpu FOREIGN KEY (cpu_id) REFERENCES cpu(id);
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_ocung FOREIGN KEY (ocung_id) REFERENCES ocung(id);
+
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_card FOREIGN KEY (card_id) REFERENCES card(id);
+
+-- Nếu hãng nằm riêng
+ALTER TABLE chi_tiet_san_pham
+ADD CONSTRAINT FK_ctsp_hang FOREIGN KEY (hang_id) REFERENCES hang(id);
+
+
+SET IDENTITY_INSERT loai_san_pham ON;
+
+INSERT INTO loai_san_pham (id, ten, trang_thai)
+VALUES 
+(1,'Laptop học tập', 1),
+(2,'Laptop văn phòng', 1),
+(3,'Laptop gaming', 1),
+(4,'Laptop đồ họa', 1),
+(5,'Laptop doanh nhân', 1),
+(6,'Laptop 2-trong-1', 1),
+(7,'Laptop cảm ứng', 1),
+(8,'Mini Laptop', 1),
+(9,'Ultrabook', 1),
+(10,'Chromebook', 1);
+
+SET IDENTITY_INSERT loai_san_pham OFF;
+
+SELECT * FROM san_pham;
+SET IDENTITY_INSERT san_pham ON;
+
+INSERT INTO san_pham (id, ten, mo_ta, loai_san_pham_id, hang_id, trang_thai)
+VALUES
+(1,'Laptop Dell Inspiron 15','Intel Core i5, RAM 8GB, SSD 512GB', 1, 1, 1),
+(2,'Laptop HP Pavilion','AMD Ryzen 5, RAM 16GB, SSD 512GB', 1, 1, 1),
+(3,'MacBook Pro M1','Apple M1, RAM 8GB, SSD 256GB', 2, 1, 1),
+(4,'Laptop Asus Vivobook','Intel Core i7, RAM 16GB, SSD 1TB', 1, 1, 1),
+(5,'Acer Aspire 5','Intel Core i3, RAM 4GB, HDD 1TB', 1, 1, 0),
+(6,'Lenovo ThinkPad E14','Intel Core i5, RAM 8GB, SSD 256GB', 1, 1, 1),
+(7,'MSI Gaming GF63','Intel Core i7, RAM 16GB, SSD 512GB, GTX 1650', 3, 1, 1),
+(8,'MacBook Air M2','Apple M2, RAM 8GB, SSD 512GB', 2, 1, 1),
+(9,'Laptop LG Gram','Intel Evo, RAM 16GB, SSD 1TB', 1, 1, 1),
+(10,'Surface Laptop 4','Intel Core i5, RAM 8GB, SSD 512GB', 2, 1, 1);
+
+SET IDENTITY_INSERT san_pham OFF;
+
+
+SET IDENTITY_INSERT chi_tiet_san_pham ON;
+
+INSERT INTO chi_tiet_san_pham (id, san_pham_id, ram_id, cpu_id, ocung_id, card_id, serial, gia_ban, trang_thai)
+VALUES 
+(1, 1, 1, 1, 1, 1, 'SN001', 15990000, 1),
+(2, 2, 2, 2, 2, 2, 'SN002', 17990000, 1),
+(3, 3, 3, 1, 2, 3, 'SN003', 13490000, 1),
+(4, 4, 4, 2, 3, 2, 'SN004', 21490000, 1),
+(5, 5, 5, 3, 4, 1, 'SN005', 11990000, 0),
+(6, 6, 1, 2, 2, 2, 'SN006', 15490000, 1),
+(7, 7, 2, 1, 3, 3, 'SN007', 14490000, 1),
+(8, 8, 3, 2, 1, 1, 'SN008', 19990000, 1),
+(9, 9, 4, 3, 2, 2, 'SN009', 23490000, 0),
+(10, 10, 5, 1, 4, 3, 'SN010', 22490000, 1);
+
+SET IDENTITY_INSERT chi_tiet_san_pham OFF;
+
+select * from cpu;
+DELETE FROM cpu;
+
+DBCC CHECKIDENT ('cpu', RESEED, 0);
+INSERT INTO cpu (ten, toc_do, loai, trang_thai)
+VALUES
+(N'Intel Core i3-1115G4', N'3.0GHz', N'Laptop', 1),
+(N'Intel Core i5-1135G7', N'2.4GHz', N'Laptop', 1),
+(N'Intel Core i7-1165G7', N'2.8GHz', N'Laptop', 1),
+(N'AMD Ryzen 5 5500U', N'2.1GHz', N'Laptop', 1),
+(N'AMD Ryzen 7 5800U', N'1.9GHz', N'Laptop', 1),
+(N'Intel Core i9-11900H', N'2.5GHz', N'Laptop', 1),
+(N'AMD Ryzen 9 5900HX', N'3.3GHz', N'Laptop', 1);
+
+select * from ram;
+DELETE FROM ram;
+DBCC CHECKIDENT ('ram', RESEED, 0);
+INSERT INTO ram (ten, dung_luong, loai, trang_thai)
+VALUES (N'RAM Mới', N'8GB', N'DDR4', 1);
+
+INSERT INTO ram (ten, dung_luong, loai, trang_thai)
+VALUES 
+(N'RAM 4GB DDR4',     N'4GB',   N'DDR4', 1),
+(N'RAM 8GB DDR4',     N'8GB',   N'DDR4', 1),
+(N'RAM 16GB DDR4',    N'16GB',  N'DDR4', 1),
+(N'RAM 32GB DDR4',    N'32GB',  N'DDR4', 1),
+(N'RAM 64GB DDR4',    N'64GB',  N'DDR4', 1),
+(N'RAM 128GB DDR4',   N'128GB', N'DDR4', 1),
+(N'RAM 8GB DDR5',     N'8GB',   N'DDR5', 1),
+(N'RAM 16GB DDR5',    N'16GB',  N'DDR5', 1),
+(N'RAM 32GB DDR5',    N'32GB',  N'DDR5', 1);
+
+CREATE VIEW vw_chi_tiet_san_pham_full AS
+SELECT ct.id, sp.ten AS ten_san_pham,  ram.ten AS ten_ram,cpu.ten AS ten_cpu,
+       oc.ten AS ten_ocung, card.ten AS ten_card, h.ten AS ten_hang,
+       ct.serial, ct.gia_ban, ct.trang_thai
+FROM chi_tiet_san_pham ct
+JOIN san_pham sp ON ct.san_pham_id = sp.id
+JOIN cpu ON ct.cpu_id = cpu.id
+JOIN ram ON ct.ram_id = ram.id
+JOIN ocung oc ON ct.ocung_id = oc.id
+JOIN card ON ct.card_id = card.id
+JOIN hang h ON ct.hang_id = h.id;
+SELECT * FROM vw_chi_tiet_san_pham_full;
+
+CREATE OR ALTER VIEW vw_chi_tiet_san_pham_display AS
+SELECT 
+    ct.id,
+    sp.ten AS ten_san_pham,
+    cpu.ten AS ten_cpu,
+    card.ten AS ten_card,
+    h.ten AS ten_hang,
+    oc.ten AS ten_ocung,
+    ram.ten AS ten_ram,
+    ct.serial,
+    ct.gia_ban,
+    ct.trang_thai
+FROM chi_tiet_san_pham ct
+JOIN san_pham sp ON ct.san_pham_id = sp.id
+JOIN cpu ON ct.cpu_id = cpu.id
+JOIN card ON ct.card_id = card.id
+JOIN hang h ON ct.hang_id = h.id
+JOIN ocung oc ON ct.ocung_id = oc.id
+JOIN ram ON ct.ram_id = ram.id;

@@ -5,19 +5,28 @@
 package DellStore.ui.manager;
 
 import DellStore.dao.impl.cardDAOImpl;
+import DellStore.dao.impl.chitietsanphamDAO;
 import DellStore.dao.impl.cpuDAOImpl;
 import DellStore.dao.impl.hangDAOImpl;
 import DellStore.dao.impl.ocungDAOImpl;
 import DellStore.dao.impl.ramDAOImpl;
 import DellStore.entity.card;
+import DellStore.entity.chitietsanpham;
 import DellStore.entity.cpu;
 import DellStore.entity.hang;
 import DellStore.entity.ocung;
 import DellStore.entity.ram;
+import DellStore.utils.XJdbc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,11 +39,17 @@ public class SanPhamJPanel extends javax.swing.JPanel {
      */
     public SanPhamJPanel() {
         initComponents();
+         DefaultTableModel model = new DefaultTableModel();
+   model.setColumnIdentifiers(new Object[]{
+    "STT", "Tên sản phẩm", "ram", "Cpu", "Ỏ Cứng", "card", "hãng", "Serial", "Giá bán", "Trạng thái"
+});
+    tbl_bangDSSanPham.setModel(model);
         fillcomboboxram();
         fillComboBoxCPU();
         fillComboBoxHang();
         fillComboBoxOCung();
         fillComboBoxCard();
+        fillTableChiTietSanPham();
     }
 
     /**
@@ -611,6 +626,38 @@ public void fillComboBoxHang() {
         model.addElement(item);
     }
     cbo_Hang.setModel(model);
+}
+private void fillTableChiTietSanPham() {
+    DefaultTableModel model = (DefaultTableModel) tbl_bangDSSanPham.getModel();
+    model.setRowCount(0); // Xóa dữ liệu cũ
+
+    String sql = "SELECT * FROM vw_chi_tiet_san_pham_display";
+
+    try (
+        Connection conn = XJdbc.openConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()
+    ) {
+        int stt = 1;
+        while (rs.next()) {
+            Object[] row = {
+                stt++,
+                rs.getString("san_pham_id"),
+                rs.getString("ram_id"),
+                rs.getString("cpu_id"),
+                rs.getString("ocung_id"),
+                rs.getString("card_id"),
+                rs.getString("hang_id"),
+                rs.getString("serial"),
+                rs.getDouble("gia_ban"),
+                rs.getInt("trang_thai") == 1 ? "Còn hàng" : "Hết hàng"
+            };
+            model.addRow(row);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu Chi Tiết Sản Phẩm: " + e.getMessage());
+    }
 }
 
 

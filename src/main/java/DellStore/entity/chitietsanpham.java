@@ -19,11 +19,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class sanpham {
+public class chitietsanpham {
     int id;
-    String ten;
-    String mo_ta;
-    int loai_san_pham_id;
+    int san_pham_id;
+    int ram_id;
+    int cpu_id;
+    int ocung_id;
+    int card_id;
     int hang_id;
+    String serial;
+    double gia_ban;
     int trang_thai;
+    
 }
