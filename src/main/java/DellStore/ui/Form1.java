@@ -4,12 +4,15 @@
  */
 package DellStore.ui;
 
+import DellStore.ui.manager.NhanVienJPanel;
+import DellStore.ui.manager.homePanel;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import DellStore.controller.formController;
+import DellStore.ui.manager.SanPhamJPanel;
 
 /**
  *
@@ -21,6 +24,7 @@ public class Form1 extends javax.swing.JFrame implements formController {
      * Creates new form Form
      */
     public void showPanel(javax.swing.JPanel panel) {
+        
         pnlCCenter.removeAll();                   // Xóa panel cũ
         pnlCCenter.setLayout(new java.awt.BorderLayout());
         pnlCCenter.add(panel, java.awt.BorderLayout.CENTER);
@@ -31,9 +35,10 @@ public class Form1 extends javax.swing.JFrame implements formController {
 
     public Form1() {
         initComponents();
+        setLocationRelativeTo(null);
         init();
 // this.setExtendedState(JFrame.MAXIMIZED_BOTH);  // FULLSCREE
-        JButton[] btns = {btn_banhang, btn_hoadon, btn_khachhang, btn_nhanvien, btn_pgg, btn_sanpham, btn_thongke, btn_trangchu};
+        JButton[] btns = {btn_thongke, btn_khachhang, btn_nhanvien, btn_khuyenmai, btn_sanpham, btn_banhang, btn_hoadon};
         for (JButton btn : btns) {
             btn.setOpaque(true); // QUAN TRỌNG: cho phép vẽ nền đúng
             btn.setBorderPainted(false);
@@ -87,14 +92,14 @@ public class Form1 extends javax.swing.JFrame implements formController {
         pnlRoot = new javax.swing.JPanel();
         pnlSlide = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        btn_trangchu = new javax.swing.JButton();
         btn_banhang = new javax.swing.JButton();
-        btn_hoadon = new javax.swing.JButton();
         btn_sanpham = new javax.swing.JButton();
-        btn_pgg = new javax.swing.JButton();
+        btn_nhanvien = new javax.swing.JButton();
+        btn_hoadon = new javax.swing.JButton();
+        btn_khuyenmai = new javax.swing.JButton();
         btn_khachhang = new javax.swing.JButton();
         btn_thongke = new javax.swing.JButton();
-        btn_nhanvien = new javax.swing.JButton();
+        btn_thoat = new javax.swing.JButton();
         pnlCenter = new javax.swing.JPanel();
         pnlCTop = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -115,28 +120,10 @@ public class Form1 extends javax.swing.JFrame implements formController {
         jLabel2.setPreferredSize(new java.awt.Dimension(130, 145));
         pnlSlide.add(jLabel2);
 
-        btn_trangchu.setBackground(new java.awt.Color(14, 36, 49));
-        btn_trangchu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_trangchu.setForeground(new java.awt.Color(255, 255, 255));
-        btn_trangchu.setIcon(null);
-        btn_trangchu.setText("  Trang Chủ");
-        btn_trangchu.setBorderPainted(false);
-        btn_trangchu.setContentAreaFilled(false);
-        btn_trangchu.setFocusPainted(false);
-        btn_trangchu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_trangchu.setPreferredSize(new java.awt.Dimension(180, 70));
-        btn_trangchu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_trangchuActionPerformed(evt);
-            }
-        });
-        pnlSlide.add(btn_trangchu);
-
         btn_banhang.setBackground(new java.awt.Color(14, 36, 49));
         btn_banhang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_banhang.setForeground(new java.awt.Color(255, 255, 255));
-        btn_banhang.setIcon(null);
-        btn_banhang.setText("  Bán hàng");
+        btn_banhang.setText("Bán Hàng");
         btn_banhang.setBorderPainted(false);
         btn_banhang.setContentAreaFilled(false);
         btn_banhang.setFocusPainted(false);
@@ -149,11 +136,42 @@ public class Form1 extends javax.swing.JFrame implements formController {
         });
         pnlSlide.add(btn_banhang);
 
+        btn_sanpham.setBackground(new java.awt.Color(14, 36, 49));
+        btn_sanpham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_sanpham.setForeground(new java.awt.Color(255, 255, 255));
+        btn_sanpham.setText("Sản Phẩm");
+        btn_sanpham.setBorderPainted(false);
+        btn_sanpham.setContentAreaFilled(false);
+        btn_sanpham.setFocusPainted(false);
+        btn_sanpham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_sanpham.setPreferredSize(new java.awt.Dimension(180, 70));
+        btn_sanpham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_sanphamActionPerformed(evt);
+            }
+        });
+        pnlSlide.add(btn_sanpham);
+
+        btn_nhanvien.setBackground(new java.awt.Color(14, 36, 49));
+        btn_nhanvien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_nhanvien.setForeground(new java.awt.Color(255, 255, 255));
+        btn_nhanvien.setText("Nhân Viên");
+        btn_nhanvien.setBorderPainted(false);
+        btn_nhanvien.setContentAreaFilled(false);
+        btn_nhanvien.setFocusPainted(false);
+        btn_nhanvien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_nhanvien.setPreferredSize(new java.awt.Dimension(180, 70));
+        btn_nhanvien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_nhanvienActionPerformed(evt);
+            }
+        });
+        pnlSlide.add(btn_nhanvien);
+
         btn_hoadon.setBackground(new java.awt.Color(14, 36, 49));
         btn_hoadon.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_hoadon.setForeground(new java.awt.Color(255, 255, 255));
-        btn_hoadon.setIcon(null);
-        btn_hoadon.setText("  Hóa Đơn");
+        btn_hoadon.setText("Hóa Đơn");
         btn_hoadon.setBorderPainted(false);
         btn_hoadon.setContentAreaFilled(false);
         btn_hoadon.setFocusPainted(false);
@@ -166,35 +184,26 @@ public class Form1 extends javax.swing.JFrame implements formController {
         });
         pnlSlide.add(btn_hoadon);
 
-        btn_sanpham.setBackground(new java.awt.Color(14, 36, 49));
-        btn_sanpham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_sanpham.setForeground(new java.awt.Color(255, 255, 255));
-        btn_sanpham.setIcon(null);
-        btn_sanpham.setText("  Sản phẩm");
-        btn_sanpham.setBorderPainted(false);
-        btn_sanpham.setContentAreaFilled(false);
-        btn_sanpham.setFocusPainted(false);
-        btn_sanpham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_sanpham.setPreferredSize(new java.awt.Dimension(180, 70));
-        pnlSlide.add(btn_sanpham);
-
-        btn_pgg.setBackground(new java.awt.Color(14, 36, 49));
-        btn_pgg.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_pgg.setForeground(new java.awt.Color(255, 255, 255));
-        btn_pgg.setIcon(null);
-        btn_pgg.setText("  Phiếu giảm giá");
-        btn_pgg.setBorderPainted(false);
-        btn_pgg.setContentAreaFilled(false);
-        btn_pgg.setFocusPainted(false);
-        btn_pgg.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_pgg.setPreferredSize(new java.awt.Dimension(180, 70));
-        pnlSlide.add(btn_pgg);
+        btn_khuyenmai.setBackground(new java.awt.Color(14, 36, 49));
+        btn_khuyenmai.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_khuyenmai.setForeground(new java.awt.Color(255, 255, 255));
+        btn_khuyenmai.setText("Khuyến Mãi");
+        btn_khuyenmai.setBorderPainted(false);
+        btn_khuyenmai.setContentAreaFilled(false);
+        btn_khuyenmai.setFocusPainted(false);
+        btn_khuyenmai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_khuyenmai.setPreferredSize(new java.awt.Dimension(180, 70));
+        btn_khuyenmai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_khuyenmaiActionPerformed(evt);
+            }
+        });
+        pnlSlide.add(btn_khuyenmai);
 
         btn_khachhang.setBackground(new java.awt.Color(14, 36, 49));
         btn_khachhang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_khachhang.setForeground(new java.awt.Color(255, 255, 255));
-        btn_khachhang.setIcon(null);
-        btn_khachhang.setText("  Khách hàng");
+        btn_khachhang.setText("Khách Hàng");
         btn_khachhang.setBorderPainted(false);
         btn_khachhang.setContentAreaFilled(false);
         btn_khachhang.setFocusPainted(false);
@@ -210,31 +219,34 @@ public class Form1 extends javax.swing.JFrame implements formController {
         btn_thongke.setBackground(new java.awt.Color(14, 36, 49));
         btn_thongke.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_thongke.setForeground(new java.awt.Color(255, 255, 255));
-        btn_thongke.setIcon(null);
-        btn_thongke.setText("  Thống kê");
+        btn_thongke.setText("Thống  Kê");
         btn_thongke.setBorderPainted(false);
         btn_thongke.setContentAreaFilled(false);
         btn_thongke.setFocusPainted(false);
         btn_thongke.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btn_thongke.setPreferredSize(new java.awt.Dimension(180, 70));
-        pnlSlide.add(btn_thongke);
-
-        btn_nhanvien.setBackground(new java.awt.Color(14, 36, 49));
-        btn_nhanvien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_nhanvien.setForeground(new java.awt.Color(255, 255, 255));
-        btn_nhanvien.setIcon(null);
-        btn_nhanvien.setText("  Nhân viên");
-        btn_nhanvien.setBorderPainted(false);
-        btn_nhanvien.setContentAreaFilled(false);
-        btn_nhanvien.setFocusPainted(false);
-        btn_nhanvien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_nhanvien.setPreferredSize(new java.awt.Dimension(180, 70));
-        btn_nhanvien.addActionListener(new java.awt.event.ActionListener() {
+        btn_thongke.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_nhanvienActionPerformed(evt);
+                btn_thongkeActionPerformed(evt);
             }
         });
-        pnlSlide.add(btn_nhanvien);
+        pnlSlide.add(btn_thongke);
+
+        btn_thoat.setBackground(new java.awt.Color(14, 36, 49));
+        btn_thoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_thoat.setForeground(new java.awt.Color(255, 255, 255));
+        btn_thoat.setText("Đăng Xuất");
+        btn_thoat.setBorderPainted(false);
+        btn_thoat.setContentAreaFilled(false);
+        btn_thoat.setFocusPainted(false);
+        btn_thoat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_thoat.setPreferredSize(new java.awt.Dimension(180, 70));
+        btn_thoat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_thoatActionPerformed(evt);
+            }
+        });
+        pnlSlide.add(btn_thoat);
 
         pnlRoot.add(pnlSlide, java.awt.BorderLayout.WEST);
 
@@ -304,7 +316,7 @@ public class Form1 extends javax.swing.JFrame implements formController {
         );
         pnlCCenterLayout.setVerticalGroup(
             pnlCCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 788, Short.MAX_VALUE)
+            .addGap(0, 904, Short.MAX_VALUE)
         );
 
         pnlCenter.add(pnlCCenter, java.awt.BorderLayout.CENTER);
@@ -316,32 +328,51 @@ public class Form1 extends javax.swing.JFrame implements formController {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_trangchuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_trangchuActionPerformed
-        // TODO add your handling code here:
-        this.showHomeJPanel(this);
-    }//GEN-LAST:event_btn_trangchuActionPerformed
-
-    private void btn_banhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_banhangActionPerformed
+    private void btn_thongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongkeActionPerformed
         // TODO add your handling code here:
 
-        this.showBanHangJPanel(this);
-    }//GEN-LAST:event_btn_banhangActionPerformed
-
-    private void btn_hoadonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hoadonActionPerformed
-        // TODO add your handling code here:
-
-        this.showHoaDonJPanel(this);
-    }//GEN-LAST:event_btn_hoadonActionPerformed
+//        this.showBanHangJPanel(this);
+    }//GEN-LAST:event_btn_thongkeActionPerformed
 
     private void btn_khachhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khachhangActionPerformed
         // TODO add your handling code here:
-        this.showKhachhangJPanel(this);
+
+//        this.showHoaDonJPanel(this);
     }//GEN-LAST:event_btn_khachhangActionPerformed
 
     private void btn_nhanvienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nhanvienActionPerformed
         // TODO add your handling code here:
         this.showNhanVienJPanel(this);
     }//GEN-LAST:event_btn_nhanvienActionPerformed
+
+    private void btn_khuyenmaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khuyenmaiActionPerformed
+        // TODO add your handling code here:
+//        this.showNhanVienJPanel(this);
+    }//GEN-LAST:event_btn_khuyenmaiActionPerformed
+
+    private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
+        // TODO add your handling code here:
+            lloginJDialog1 dialog = new lloginJDialog1(this, true);
+    dialog.setVisible(true);
+    if (!dialog.isLoggedIn()) {
+        System.exit(0);
+    }
+    }//GEN-LAST:event_btn_thoatActionPerformed
+
+    private void btn_banhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_banhangActionPerformed
+        // TODO add your handling code here:
+//        this.show
+    }//GEN-LAST:event_btn_banhangActionPerformed
+
+    private void btn_sanphamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sanphamActionPerformed
+        // TODO add your handling code here:
+        this.showSanPhamJPanel(this);
+        
+    }//GEN-LAST:event_btn_sanphamActionPerformed
+
+    private void btn_hoadonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hoadonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_hoadonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -383,11 +414,11 @@ public class Form1 extends javax.swing.JFrame implements formController {
     private javax.swing.JButton btn_banhang;
     private javax.swing.JButton btn_hoadon;
     private javax.swing.JButton btn_khachhang;
+    private javax.swing.JButton btn_khuyenmai;
     private javax.swing.JButton btn_nhanvien;
-    private javax.swing.JButton btn_pgg;
     private javax.swing.JButton btn_sanpham;
+    private javax.swing.JButton btn_thoat;
     private javax.swing.JButton btn_thongke;
-    private javax.swing.JButton btn_trangchu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -402,36 +433,30 @@ public class Form1 extends javax.swing.JFrame implements formController {
 
     @Override
     public void init() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        this.showloginDialog(this);
         this.showHomeJPanel(this);
-
     }
 
     @Override
     public void showHomeJPanel(JFrame frame) {
-        //   throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         homePanel panel = new homePanel();
         showPanel(panel);
     }
 
     @Override
     public void showBanHangJPanel(JFrame frame) {
-        //  throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //        banhangJPanel panel = new banhangJPanel();
 //        showPanel(panel);
     }
 
     @Override
     public void showHoaDonJPanel(JFrame frame) {
-        //  throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       
 //        hoadonJPanel panel = new hoadonJPanel();
 //        showPanel(panel);
     }
 
     @Override
     public void showKhachhangJPanel(JFrame frame) {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 //  KhachHangJPanel panel = new KhachHangJPanel();
 //        showPanel(panel);
     }
@@ -439,5 +464,9 @@ public class Form1 extends javax.swing.JFrame implements formController {
     public void showNhanVienJPanel(JFrame frame) {
         NhanVienJPanel nhanVienPanel = new NhanVienJPanel();
         showPanel(nhanVienPanel);
+}
+      public void showSanPhamJPanel(JFrame frame) {
+          SanPhamJPanel sanPhamJPanel = new SanPhamJPanel();
+        showPanel(sanPhamJPanel);
 }
 }

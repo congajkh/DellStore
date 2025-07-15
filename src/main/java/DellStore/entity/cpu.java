@@ -19,6 +19,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class sanpham {
-    
+public class cpu {
+    int id;
+    String ten;
+    String toc_do;
+    String loai;
+    int trang_thai;
+@Override
+public String toString() {
+    return ten; // hoặc: return dungLuong + " " + loai;
+}
 }
