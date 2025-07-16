@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DellStore.entity;
-
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +18,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class khachhang {
+public class serial {
     int id;
-    String ten;
-    Date ngay_sinh;
-    String gioi_tinh;
-    String sdt;
-    String email;
-    int trang_thai;    
+    String ma_serial;
+    int chi_tiet_sp_id;
+    int trang_thai;
+    
+   @Override
+    public String toString() {
+        return ma_serial; // hoặc: return dungLuong + " " + loai;
+    }
 }

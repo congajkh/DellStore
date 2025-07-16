@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 public class chitietsanphamDAO {
 
-    String insertSql = "INSERT INTO chi_tiet_san_pham (san_pham_id, ram_id, cpu_id, ocung_id, card_id, hang_id, serial, gia_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    String updateSql = "UPDATE chi_tiet_san_pham SET san_pham_id=?, ram_id=?, cpu_id=?, ocung_id=?, card_id=?, hang_id=?, serial=?, gia_ban=?, trang_thai=? WHERE id=?";
+    String insertSql = "INSERT INTO chi_tiet_san_pham (san_pham_id, ram_id, cpu_id, ocung_id, card_id, hang_id, serial_id, gia_ban, trang_thai) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    String updateSql = "UPDATE chi_tiet_san_pham SET san_pham_id=?, ram_id=?, cpu_id=?, ocung_id=?, card_id=?, hang_id=?, serial_id=?, gia_ban=?, trang_thai=? WHERE id=?";
     String deleteSql = "DELETE FROM chi_tiet_san_pham WHERE id=?";
     String findAllSql = "SELECT * FROM chi_tiet_san_pham";
     String findByIdSql = "SELECT * FROM chi_tiet_san_pham WHERE id=?";
@@ -28,7 +28,7 @@ public class chitietsanphamDAO {
             entity.getOcung_id(),
             entity.getCard_id(),
             entity.getHang_id(),
-            entity.getSerial(),
+            entity.getSerial_id(),
             entity.getGia_ban(),
             entity.getTrang_thai()
         );
@@ -43,7 +43,7 @@ public class chitietsanphamDAO {
             entity.getOcung_id(),
             entity.getCard_id(),
             entity.getHang_id(),
-            entity.getSerial(),
+            entity.getSerial_id(),
             entity.getGia_ban(),
             entity.getTrang_thai(),
             entity.getId()

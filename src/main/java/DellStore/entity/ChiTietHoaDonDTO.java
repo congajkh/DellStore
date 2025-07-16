@@ -4,7 +4,8 @@
  */
 package DellStore.entity;
 
-import java.util.Date;
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +21,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class khachhang {
-    int id;
-    String ten;
-    Date ngay_sinh;
-    String gioi_tinh;
-    String sdt;
-    String email;
-    int trang_thai;    
+public class ChiTietHoaDonDTO {
+    private int id;
+    private String maHoaDon;
+    private String tenSanPham;
+    private BigDecimal donGia;
+    private int soLuong;
+    private BigDecimal tienKhuyenMai;
+    private BigDecimal tongTien;
+    private String maSerial;  
 }

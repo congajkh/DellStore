@@ -20,12 +20,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @Data
-public class khachhang {
-    int id;
-    String ten;
-    Date ngay_sinh;
-    String gioi_tinh;
-    String sdt;
-    String email;
-    int trang_thai;    
+
+public class khuyenmai {
+     private int id;
+    private String ma_km;
+    private String ten_km;
+    private String loai_km;         // "%" hoặc "tiền mặt"
+    private double gia_tri;
+    private Date ngay_bat_dau;
+    private Date ngay_ket_thuc;
+    private int trang_thai;
 }
