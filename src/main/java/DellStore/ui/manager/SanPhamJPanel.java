@@ -243,6 +243,11 @@ public class SanPhamJPanel extends javax.swing.JPanel {
                 "STT", "Tên SP", "CPU", "Card", "Hãng", "Ổ Cứng", "Ram", "Serial", "Giá Bán", "Trạng Thái"
             }
         ));
+        tbl_bangDSSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_bangDSSanPhamMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbl_bangDSSanPham);
 
         txt_timkiemdssanpham.addActionListener(new java.awt.event.ActionListener() {
@@ -578,7 +583,7 @@ public class SanPhamJPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -631,7 +636,7 @@ private void fillTableChiTietSanPham() {
     DefaultTableModel model = (DefaultTableModel) tbl_bangDSSanPham.getModel();
     model.setRowCount(0); // Xóa dữ liệu cũ
 
-    String sql = "SELECT * FROM vw_chi_tiet_san_pham_display";
+    String sql = "SELECT * FROM v_chi_tiet_san_pham_display";
 
     try (
         Connection conn = XJdbc.openConnection();
@@ -642,12 +647,12 @@ private void fillTableChiTietSanPham() {
         while (rs.next()) {
             Object[] row = {
                 stt++,
-                rs.getString("san_pham_id"),
-                rs.getString("ram_id"),
-                rs.getString("cpu_id"),
-                rs.getString("ocung_id"),
-                rs.getString("card_id"),
-                rs.getString("hang_id"),
+                rs.getString("ten_san_pham"),
+                rs.getString("ten_ram"),
+                rs.getString("ten_cpu"),
+                rs.getString("ten_ocung"),
+                rs.getString("ten_card"),
+                rs.getString("ten_hang"),
                 rs.getString("serial"),
                 rs.getDouble("gia_ban"),
                 rs.getInt("trang_thai") == 1 ? "Còn hàng" : "Hết hàng"
@@ -721,6 +726,23 @@ private void fillTableChiTietSanPham() {
     dialog.setLocationRelativeTo(this);
     dialog.setVisible(true);
     }//GEN-LAST:event_btn_ThemCardActionPerformed
+
+    private void tbl_bangDSSanPhamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_bangDSSanPhamMouseClicked
+        int row = tbl_bangDSSanPham.getSelectedRow();
+    if (row >= 0) {
+        cbo_tensanpham.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 1));
+        cbo_Ram.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 2));
+        cbo_CPU.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 3));
+        cbo_OCung.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 4));
+        cbo_Card.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 5));
+        cbo_Hang.setSelectedItem(tbl_bangDSSanPham.getValueAt(row, 6));
+        txt_serial.setText(String.valueOf(tbl_bangDSSanPham.getValueAt(row, 7)));
+        txt_gia.setText(String.valueOf(tbl_bangDSSanPham.getValueAt(row, 8)));
+        // Nếu trạng thái là combobox hoặc button, bạn có thể xử lý như sau:
+        String trangThai = String.valueOf(tbl_bangDSSanPham.getValueAt(row, 9));
+        btn_trangthai.setText(trangThai); // Nếu là nút, hoặc setSelectedItem nếu là combobox
+    }
+}//GEN-LAST:event_tbl_bangDSSanPhamMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
