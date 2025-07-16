@@ -27,8 +27,8 @@ public class chitietsanpham {
     int ocung_id;
     int card_id;
     int hang_id;
-    String serial;
-    double gia_ban;
+    int serial_id;
+    long gia_ban;
     int trang_thai;
     
 }

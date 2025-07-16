@@ -12,7 +12,12 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import DellStore.controller.formController;
+import DellStore.ui.manager.KhachHangJPanel;
+import DellStore.ui.manager.KhuyenMaiJPanel;
 import DellStore.ui.manager.SanPhamJPanel;
+import DellStore.ui.manager.ThongKeJPanel;
+import DellStore.ui.manager.banhangJPanel;
+import DellStore.ui.manager.hoadonJPanel;
 
 /**
  *
@@ -24,13 +29,13 @@ public class Form1 extends javax.swing.JFrame implements formController {
      * Creates new form Form
      */
     public void showPanel(javax.swing.JPanel panel) {
-        
+
         pnlCCenter.removeAll();                   // Xóa panel cũ
         pnlCCenter.setLayout(new java.awt.BorderLayout());
         pnlCCenter.add(panel, java.awt.BorderLayout.CENTER);
         pnlCCenter.revalidate();                 // Cập nhật lại giao diện
         pnlCCenter.repaint();
-        
+
     }
 
     public Form1() {
@@ -330,14 +335,13 @@ public class Form1 extends javax.swing.JFrame implements formController {
 
     private void btn_thongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongkeActionPerformed
         // TODO add your handling code here:
+this.showThongKeJPanel(this);
 
-//        this.showBanHangJPanel(this);
     }//GEN-LAST:event_btn_thongkeActionPerformed
 
     private void btn_khachhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khachhangActionPerformed
         // TODO add your handling code here:
-
-//        this.showHoaDonJPanel(this);
+        this.showKhachHangJPanel(this);
     }//GEN-LAST:event_btn_khachhangActionPerformed
 
     private void btn_nhanvienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nhanvienActionPerformed
@@ -347,31 +351,33 @@ public class Form1 extends javax.swing.JFrame implements formController {
 
     private void btn_khuyenmaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khuyenmaiActionPerformed
         // TODO add your handling code here:
-//        this.showNhanVienJPanel(this);
+        this.showKhuyenMaiJPanel(this);
     }//GEN-LAST:event_btn_khuyenmaiActionPerformed
 
     private void btn_thoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thoatActionPerformed
         // TODO add your handling code here:
-            lloginJDialog1 dialog = new lloginJDialog1(this, true);
-    dialog.setVisible(true);
-    if (!dialog.isLoggedIn()) {
-        System.exit(0);
-    }
+        lloginJDialog1 dialog = new lloginJDialog1(this, true);
+        dialog.setVisible(true);
+        if (!dialog.isLoggedIn()) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_btn_thoatActionPerformed
 
     private void btn_banhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_banhangActionPerformed
         // TODO add your handling code here:
 //        this.show
+ this.showBanHangJPanel(this);
     }//GEN-LAST:event_btn_banhangActionPerformed
 
     private void btn_sanphamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sanphamActionPerformed
         // TODO add your handling code here:
         this.showSanPhamJPanel(this);
-        
+
     }//GEN-LAST:event_btn_sanphamActionPerformed
 
     private void btn_hoadonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_hoadonActionPerformed
         // TODO add your handling code here:
+        this.showHoaDonJPanel(this);
     }//GEN-LAST:event_btn_hoadonActionPerformed
 
     /**
@@ -444,15 +450,14 @@ public class Form1 extends javax.swing.JFrame implements formController {
 
     @Override
     public void showBanHangJPanel(JFrame frame) {
-//        banhangJPanel panel = new banhangJPanel();
-//        showPanel(panel);
+        banhangJPanel panel = new banhangJPanel();
+        showPanel(panel);
     }
 
     @Override
     public void showHoaDonJPanel(JFrame frame) {
-       
-//        hoadonJPanel panel = new hoadonJPanel();
-//        showPanel(panel);
+        hoadonJPanel panel = new hoadonJPanel();
+        showPanel(panel);
     }
 
     @Override
@@ -461,12 +466,27 @@ public class Form1 extends javax.swing.JFrame implements formController {
 //        showPanel(panel);
     }
 //    @Override
+
     public void showNhanVienJPanel(JFrame frame) {
         NhanVienJPanel nhanVienPanel = new NhanVienJPanel();
         showPanel(nhanVienPanel);
-}
-      public void showSanPhamJPanel(JFrame frame) {
-          SanPhamJPanel sanPhamJPanel = new SanPhamJPanel();
+    }
+
+    public void showSanPhamJPanel(JFrame frame) {
+        SanPhamJPanel sanPhamJPanel = new SanPhamJPanel();
         showPanel(sanPhamJPanel);
-}
+    }
+
+    public void showKhuyenMaiJPanel(JFrame frame) {
+        KhuyenMaiJPanel khuyenmaiJPanel = new KhuyenMaiJPanel();
+        showPanel(khuyenmaiJPanel);
+    }
+    public void showKhachHangJPanel(JFrame frame) {
+        KhachHangJPanel JPanel = new KhachHangJPanel();
+        showPanel(JPanel);
+    }
+    public void showThongKeJPanel(JFrame frame) {
+      ThongKeJPanel JPanel = new ThongKeJPanel();
+        showPanel(JPanel);
+    }
 }

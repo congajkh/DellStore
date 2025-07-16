@@ -1,21 +1,70 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package DellStore.ui;
+package DellStore.ui.manager;
+
+import DellStore.dao.impl.khuyenmaiDAOImpl;
+import DellStore.entity.khuyenmai;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Hello
+ * @author docon
  */
-public class KhuyenMaiUI extends javax.swing.JFrame {
-
+public class KhuyenMaiJPanel extends javax.swing.JPanel {
+private khuyenmaiDAOImpl khuyenMaiDAO = new khuyenmaiDAOImpl();
     /**
-     * Creates new form KhuyenMai
+     * Creates new form KhuyenMaiJPanel
      */
-    public KhuyenMaiUI() {
+    public KhuyenMaiJPanel() {
         initComponents();
+        fillTableKhuyenMai();
     }
+   private void fillTableKhuyenMai() {
+    DefaultTableModel model = (DefaultTableModel) tbl_khuyenmai.getModel();
+    model.setRowCount(0); // Xóa dữ liệu cũ trong bảng
+
+    try {
+        List<khuyenmai> list = khuyenMaiDAO.findAll(); // Lấy danh sách khuyến mãi
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Định dạng ngày
+
+        for (khuyenmai km : list) {
+            // Xử lý cột Giá trị
+            String giaTri;
+            if (km.getLoai_km()== null) {
+                giaTri = "N/A";
+            } else if (km.getLoai_km().equals("%")) {
+                giaTri = String.format("%.0f%%", km.getGia_tri()); // Hiển thị % mà không có số thập phân
+            } else if (km.getLoai_km().equals("tiền mặt")) {
+                giaTri = String.format("%,.0f VNĐ", km.getGia_tri()); // Hiển thị tiền mặt với định dạng số
+            } else {
+                giaTri = String.format("%,.2f", km.getGia_tri()); // Trường hợp bất ngờ, hiển thị số thô
+            }
+
+            Object[] row = {
+                km.getMa_km()!= null ? km.getMa_km() : "N/A",
+                km.getTen_km()!= null ? km.getTen_km() : "N/A",
+                km.getLoai_km()!= null ? km.getLoai_km() : "N/A",
+                giaTri,
+                km.getNgay_bat_dau()!= null ? dateFormat.format(km.getNgay_bat_dau()) : "N/A",
+                km.getNgay_ket_thuc()!= null ? dateFormat.format(km.getNgay_ket_thuc()) : "N/A",
+                km.getTrang_thai()== 1 ? "Còn hiệu lực" : "Hết hạn"
+            };
+            model.addRow(row);
+        }
+        System.out.println("Loaded " + list.size() + " khuyến mãi");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, 
+            "Lỗi khi tải dữ liệu khuyến mãi: " + e.getMessage(), 
+            "Lỗi", 
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,19 +95,19 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jSeparator3 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_khuyenmai = new javax.swing.JTable();
+        rdo_conhieuluc = new javax.swing.JRadioButton();
+        rdo_hethieuluc = new javax.swing.JRadioButton();
+        txt_tensp = new javax.swing.JTextField();
+        txt_timkm = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbl_sanpham = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 51));
@@ -178,9 +227,9 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
         jLabel8.setText("Tìm khuyến mại");
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jLabel9.setText("Lọc trạng thái");
+        jLabel9.setText("Trạng thái");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_khuyenmai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -196,7 +245,27 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_khuyenmai);
+
+        rdo_conhieuluc.setText("còn hiệu lực");
+
+        rdo_hethieuluc.setText("Hết hiệu lực");
+
+        txt_tensp.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txt_tensp.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txt_tensp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_tenspActionPerformed(evt);
+            }
+        });
+
+        txt_timkm.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txt_timkm.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        txt_timkm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_timkmActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -206,52 +275,66 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(211, 211, 211)
+                .addComponent(txt_timkm, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addGap(233, 233, 233)
                 .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rdo_conhieuluc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdo_hethieuluc)
+                .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(344, 344, 344)
+                    .addComponent(txt_tensp, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addGap(344, 344, 344)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                        .addComponent(rdo_conhieuluc)
+                        .addComponent(rdo_hethieuluc))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(txt_timkm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(139, 139, 139)
+                    .addComponent(txt_tensp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(140, Short.MAX_VALUE)))
         );
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel10.setText("Tìn sản phẩm");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_sanpham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã SP", "Tên SP", "CPU", "Hãng", "Ram", "Card", "Ổ cứng", "Giá", "Số lượng"
+                "Mã SP", "Tên SP", "CPU", "Hãng", "Ram", "Card", "Ổ cứng", "Giá"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbl_sanpham);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -283,8 +366,8 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton5.setText("Áp dụng khuyến mại");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -302,7 +385,7 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,52 +398,23 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton5)
-                        .addGap(0, 11, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(38, 38, 38)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(KhuyenMaiUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(KhuyenMaiUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(KhuyenMaiUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(KhuyenMaiUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void txt_tenspActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tenspActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_tenspActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new KhuyenMaiUI().setVisible(true);
-            }
-        });
-    }
+    private void txt_timkmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_timkmActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_timkmActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -370,7 +424,6 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -388,11 +441,14 @@ public class KhuyenMaiUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JRadioButton rdo_conhieuluc;
+    private javax.swing.JRadioButton rdo_hethieuluc;
+    private javax.swing.JTable tbl_khuyenmai;
+    private javax.swing.JTable tbl_sanpham;
+    private javax.swing.JTextField txt_tensp;
+    private javax.swing.JTextField txt_timkm;
     // End of variables declaration//GEN-END:variables
 }

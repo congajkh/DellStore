@@ -81,26 +81,35 @@ PRIMARY KEY CLUSTERED ([id] ASC)
 CREATE TABLE [dbo].[san_pham](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[ten] [nvarchar](255) NULL,
+	[masp] [nvarchar](255) NULL,
 	[mo_ta] [nvarchar](255) NULL,
 	[loai_san_pham_id] [int] NULL,
 	[hang_id] [int] NULL,
 	[trang_thai] [int] NULL,
 PRIMARY KEY CLUSTERED ([id] ASC)
 );
+drop TABLE chi_tiet_san_pham; 
+CREATE TABLE [dbo].[chi_tiet_san_pham] (
+    [id] INT IDENTITY(1,1) PRIMARY KEY,
+    [san_pham_id] INT,
+    [ram_id] INT,
+    [cpu_id] INT,
+    [ocung_id] INT,
+    [card_id] INT,
+    [hang_id] INT,
+    [serial_id] INT,  -- Thêm khóa ngoại đến bảng serial
+    [gia_ban] DECIMAL(18, 2),
+    [trang_thai] INT,
 
-CREATE TABLE [dbo].[chi_tiet_san_pham](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[san_pham_id] [int] NULL,
-	[ram_id] [int] NULL,
-	[cpu_id] [int] NULL,
-	[ocung_id] [int] NULL,
-	[card_id] [int] NULL,
-	[hang_id] [int] NULL,
-	[serial] [nvarchar](50) NULL,
-	[gia_ban] [decimal](18, 2) NULL,
-	[trang_thai] [int] NULL,
-PRIMARY KEY CLUSTERED ([id] ASC)
+    CONSTRAINT FK_ctsp_sanpham FOREIGN KEY (san_pham_id) REFERENCES san_pham(id),
+    CONSTRAINT FK_ctsp_ram FOREIGN KEY (ram_id) REFERENCES ram(id),
+    CONSTRAINT FK_ctsp_cpu FOREIGN KEY (cpu_id) REFERENCES cpu(id),
+    CONSTRAINT FK_ctsp_ocung FOREIGN KEY (ocung_id) REFERENCES ocung(id),
+    CONSTRAINT FK_ctsp_card FOREIGN KEY (card_id) REFERENCES card(id),
+    CONSTRAINT FK_ctsp_hang FOREIGN KEY (hang_id) REFERENCES hang(id),
+    CONSTRAINT FK_ctsp_serial FOREIGN KEY (serial_id) REFERENCES serial(id)
 );
+
 
 -- Các bảng còn lại
 -- (Copy đầy đủ các CREATE TABLE từ update11.sql, loại bỏ các lệnh ALTER DATABASE, đường dẫn Windows)
@@ -115,14 +124,21 @@ CREATE TABLE [dbo].[ct_dot_giam_gia](
 PRIMARY KEY CLUSTERED ([id] ASC)
 );
 
-CREATE TABLE [dbo].[ct_hoa_don](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[hoa_don_id] [int] NULL,
-	[serial_id] [int] NULL,
-	[don_gia] [decimal](18, 2) NULL,
-	[trang_thai] [int] NULL,
-PRIMARY KEY CLUSTERED ([id] ASC)
+CREATE TABLE ct_hoa_don (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    hoa_don_id INT NOT NULL,
+    serial_id INT NOT NULL,
+    so_luong INT DEFAULT 1,
+    don_gia DECIMAL(18,2),
+    tien_khuyen_mai DECIMAL(18,2) DEFAULT 0,
+    tong_tien AS (don_gia * so_luong - tien_khuyen_mai) PERSISTED,
+    trang_thai INT DEFAULT 1,
+
+    CONSTRAINT FK_cthd_hoa_don FOREIGN KEY (hoa_don_id) REFERENCES hoa_don(id),
+    CONSTRAINT FK_cthd_serial FOREIGN KEY (serial_id) REFERENCES serial(id)
 );
+
+
 
 CREATE TABLE [dbo].[ct_thanh_toan](
 	[id] [int] IDENTITY(1,1) NOT NULL,
@@ -266,7 +282,19 @@ CREATE TABLE [dbo].[thong_ke_doanh_thu](
 	[trang_thai] [int] NULL,
 PRIMARY KEY CLUSTERED ([id] ASC)
 );
-
+SET IDENTITY_INSERT [dbo].[serial] ON
+INSERT into serial (id, ma_serial, chi_tiet_sp_id, trang_thai) VALUES
+(1, N'SERIAL001', 1, 1),
+(2, N'SERIAL002', 2, 1),
+(3, N'SERIAL003', 3, 1),
+(4, N'SERIAL004', 4, 1),
+(5, N'SERIAL005', 5, 1),
+(6, N'SERIAL006', 6, 1),
+(7, N'SERIAL007', 7, 1),
+(8, N'SERIAL008', 8, 1),
+(9, N'SERIAL009', 9, 1),
+(10, N'SERIAL010', 10, 1);
+SET IDENTITY_INSERT [dbo].[serial] OFF
 -- Thêm dữ liệu mẫu
 -- Dữ liệu mẫu cho bảng ram
 SET IDENTITY_INSERT [dbo].[ram] ON
@@ -384,32 +412,40 @@ INSERT INTO [dbo].[tai_khoan] ([id], [ten_dang_nhap], [mat_khau], [trang_thai], 
 SET IDENTITY_INSERT [dbo].[tai_khoan] OFF
 
 -- Dữ liệu mẫu cho bảng chi_tiet_san_pham
-SET IDENTITY_INSERT [dbo].[chi_tiet_san_pham] ON
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (1, 1, 2, 2, 3, 2, 1, N'SN001', 15990000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (2, 2, 3, 4, 4, 3, 2, N'SN002', 17990000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (3, 3, 4, 3, 5, 4, 3, N'SN003', 13490000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (4, 4, 5, 5, 6, 5, 4, N'SN004', 21490000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (5, 5, 6, 6, 7, 6, 5, N'SN005', 11990000.00, 0)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (6, 6, 7, 7, 8, 7, 6, N'SN006', 15490000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (7, 7, 8, 8, 9, 8, 7, N'SN007', 14490000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (8, 8, 9, 9, 10, 9, 8, N'SN008', 19990000.00, 1)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (9, 9, 10, 10, 1, 10, 9, N'SN009', 23490000.00, 0)
-INSERT INTO [dbo].[chi_tiet_san_pham] ([id], [san_pham_id], [ram_id], [cpu_id], [ocung_id], [card_id], [hang_id], [serial], [gia_ban], [trang_thai]) VALUES (10, 10, 1, 1, 2, 1, 10, N'SN010', 22490000.00, 1)
-SET IDENTITY_INSERT [dbo].[chi_tiet_san_pham] OFF
+INSERT INTO chi_tiet_san_pham (san_pham_id, ram_id, cpu_id, ocung_id, card_id, hang_id, serial_id, gia_ban, trang_thai)
+VALUES 
+(1, 2, 2, 3, 1, 1, 1, 15990000.00, 1),
+(2, 3, 4, 4, 2, 1, 2, 17990000.00, 1),
+(3, 4, 3, 5, 3, 1, 3, 13490000.00, 1),
+(4, 5, 5, 6, 4, 1, 4, 21490000.00, 1),
+(5, 6, 6, 7, 5, 1, 5, 11990000.00, 0),
+(6, 7, 7, 8, 6, 1, 6, 15490000.00, 1),
+(7, 8, 8, 9, 7, 1, 7, 14490000.00, 1),
+(8, 9, 9, 10, 8, 1, 8, 19990000.00, 1),
+(9, 10, 10, 1, 9, 1, 9, 23490000.00, 0);
 
+
+SET IDENTITY_INSERT [dbo].[hoa_don] ON;
+INSERT into hoa_don (id , ma, nhan_vien_id,khach_hang_id,ngay_tao,tong_tien,trang_thai) 
+VALUES 
+(1, N'HĐ001', 1, 1, '2023-10-01', 15990000.00, 1),
+(2, N'HĐ002', 2, 2, '2023-10-02', 17990000.00, 1),
+(3, N'HĐ003', 3, 3, '2023-10-03', 13490000.00, 1),
+(4, N'HĐ004', 4, 4, '2023-10-04', 21490000.00, 1),
+(5, N'HĐ005', 5, 5, '2023-10-05', 11990000.00, 0),
+(6, N'HĐ006', 6, 6, '2023-10-06', 15490000.00, 1),
+(7, N'HĐ007', 7, 7, '2023-10-07', 14490000.00, 1),
+(8, N'HĐ008', 8, 8, '2023-10-08', 19990000.00, 1),
+(9, N'HĐ009', 9, 9, '2023-10-09', 23490000.00, 0),
+(10, N'HĐ010', 10, 10, '2023-10-10', 22490000.00, 1);
+SET IDENTITY_INSERT [dbo].[hoa_don] OFF;
 -- Tạo ràng buộc khoá ngoại
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_card] FOREIGN KEY([card_id]) REFERENCES [dbo].[card] ([id]);
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_cpu] FOREIGN KEY([cpu_id]) REFERENCES [dbo].[cpu] ([id]);
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_hang] FOREIGN KEY([hang_id]) REFERENCES [dbo].[hang] ([id]);
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_ocung] FOREIGN KEY([ocung_id]) REFERENCES [dbo].[ocung] ([id]);
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_ram] FOREIGN KEY([ram_id]) REFERENCES [dbo].[ram] ([id]);
-ALTER TABLE [dbo].[chi_tiet_san_pham]  WITH CHECK ADD  CONSTRAINT [FK_ctsp_sanpham] FOREIGN KEY([san_pham_id]) REFERENCES [dbo].[san_pham] ([id]);
 
 ALTER TABLE [dbo].[ct_dot_giam_gia] ADD CONSTRAINT FK_ct_dot_giam_gia_dot_giam_gia FOREIGN KEY([dot_giam_gia_id]) REFERENCES [dbo].[dot_giam_gia]([id]);
 ALTER TABLE [dbo].[ct_dot_giam_gia] ADD CONSTRAINT FK_ct_dot_giam_gia_chi_tiet_sp FOREIGN KEY([chi_tiet_sp_id]) REFERENCES [dbo].[chi_tiet_san_pham]([id]);
-
-ALTER TABLE [dbo].[ct_hoa_don] ADD CONSTRAINT FK_ct_hoa_don_hoa_don FOREIGN KEY([hoa_don_id]) REFERENCES [dbo].[hoa_don]([id]);
-ALTER TABLE [dbo].[ct_hoa_don] ADD CONSTRAINT FK_ct_hoa_don_serial FOREIGN KEY([serial_id]) REFERENCES [dbo].[serial]([id]);
+--ty sua
+-- ALTER TABLE [dbo].[ct_hoa_don] ADD CONSTRAINT FK_ct_hoa_don_hoa_don FOREIGN KEY([hoa_don_id]) REFERENCES [dbo].[hoa_don]([id]);
+-- ALTER TABLE [dbo].[ct_hoa_don] ADD CONSTRAINT FK_ct_hoa_don_serial FOREIGN KEY([serial_id]) REFERENCES [dbo].[serial]([id]);
 
 ALTER TABLE [dbo].[ct_thanh_toan] ADD CONSTRAINT FK_ct_thanh_toan_hinh_thuc FOREIGN KEY([hinh_thuc_id]) REFERENCES [dbo].[hinh_thuc_thanh_toan]([id]);
 ALTER TABLE [dbo].[ct_thanh_toan] ADD CONSTRAINT FK_ct_thanh_toan_hoa_don FOREIGN KEY([hoa_don_id]) REFERENCES [dbo].[hoa_don]([id]);
@@ -463,3 +499,45 @@ JOIN hang h ON ct.hang_id = h.id
 JOIN ocung oc ON ct.ocung_id = oc.id
 JOIN ram ON ct.ram_id = ram.id;
 GO
+DELETE from san_pham;
+SET IDENTITY_INSERT [dbo].[san_pham] ON
+SET IDENTITY_INSERT san_pham ON;
+
+INSERT INTO san_pham (id, ten, masp, mo_ta, loai_san_pham_id, hang_id, trang_thai) VALUES
+(1, N'Laptop Dell Vostro 15', 'SP001', N'Máy phù hợp cho sinh viên, văn phòng.', 1, 1, 1),
+(2, N'Dell Inspiron 14', 'SP002', N'Hiệu năng ổn định, thiết kế gọn nhẹ.', 1, 1, 1),
+(3, N'Dell XPS 13', 'SP003', N'Cao cấp, màn hình viền mỏng.', 1, 1, 1),
+(4, N'Dell G15 Gaming', 'SP004', N'Laptop gaming mạnh mẽ.', 2, 1, 1),
+(5, N'Dell Latitude 7410', 'SP005', N'Cho doanh nghiệp, pin lâu.', 1, 1, 1),
+(6, N'Dell Precision 3551', 'SP006', N'Máy trạm đồ họa chuyên nghiệp.', 3, 1, 1),
+(7, N'Dell Alienware M15', 'SP007', N'Gaming cao cấp, đèn LED RGB.', 2, 1, 1),
+(8, N'Dell Inspiron 15', 'SP008', N'Giá rẻ, cấu hình ổn.', 1, 1, 1),
+(9, N'Dell XPS 15', 'SP009', N'Màn hình 4K, thiết kế cao cấp.', 1, 1, 1),
+(10, N'Dell Chromebook 11', 'SP010', N'Dành cho giáo dục.', 4, 1, 1);
+
+SET IDENTITY_INSERT san_pham OFF;
+
+CREATE TABLE khuyen_mai (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    ma_km NVARCHAR(20) NOT NULL UNIQUE,         -- Mã khuyến mãi
+    ten_km NVARCHAR(100) NOT NULL,              -- Tên chương trình
+    loai_km NVARCHAR(20) NOT NULL,              -- '%' hoặc 'tiền mặt'
+    gia_tri DECIMAL(10, 2) NOT NULL,            -- Giá trị khuyến mãi
+    ngay_bat_dau DATE NOT NULL,
+    ngay_ket_thuc DATE NOT NULL,
+    trang_thai INT NOT NULL                     -- 0 = hết hạn, 1 = còn hiệu lực
+);
+INSERT INTO khuyen_mai (ma_km, ten_km, loai_km, gia_tri, ngay_bat_dau, ngay_ket_thuc, trang_thai)
+VALUES 
+('KM001', N'Giảm 10%', N'%', 10.00, '2025-07-01', '2025-07-31', 1),
+('KM002', N'Giảm 500K', N'tiền mặt', 500000.00, '2025-07-01', '2025-07-20', 1),
+('KM003', N'Ưu đãi đặc biệt', N'%', 15.00, '2025-07-10', '2025-08-10', 1);
+ 
+
+ select * from chi_tiet_san_pham;
+ delete from khuyen_mai;
+ INSERT INTO khuyen_mai (ma_km, ten_km, loai_km, gia_tri, ngay_bat_dau, ngay_ket_thuc, trang_thai)
+VALUES 
+('KM001', N'Giảm 10%', N'%', 10.00, '2025-07-01', '2025-07-31', 1),
+('KM002', N'Giảm 500K', N'tiền mặt', 500000.00, '2025-07-01', '2025-07-20', 1),
+('KM003', N'Ưu đãi đặc biệt', N'%', 15.00, '2025-07-10', '2025-08-10', 1);
