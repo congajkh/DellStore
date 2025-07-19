@@ -74,65 +74,10 @@ private DefaultTableModel defaultTableModel;
     }
     }
       private void fillTable() {
-        nhanvienDAO dao = new nhanvienDAO();
-        List<nhanvien> list = dao.findAll();
-        DefaultTableModel model = (DefaultTableModel) tblDSnhanvien.getModel();
-        model.setRowCount(0); // Xóa dữ liệu cũ
-        for (nhanvien nv : list) {
-            model.addRow(new Object[]{
-                nv.getMa_nv(),
-                nv.getTen_nv(),
-                nv.getGioi_tinh(),
-                nv.getNgay_sinh(),
-                nv.getDia_chi(),
-                nv.getSdt(),
-                nv.getEmail(),
-                nv.getTrang_thai() == 1 ? "Hoạt động" : "Nghỉ việc",
-                nv.getChuc_vu()
-            });
-        }
+       
     }
    private void loadDataToForm(int row) {
-    DefaultTableModel model = (DefaultTableModel) tblDSnhanvien.getModel();
-    // Lấy dữ liệu từ từng cột của dòng được chọn
-    String maNV = model.getValueAt(row, 0).toString();
-    String tenNV = model.getValueAt(row, 1).toString();
-    String gioiTinh = model.getValueAt(row, 2).toString();
-    String ngaySinh = model.getValueAt(row, 3).toString();
-    String diaChi = model.getValueAt(row, 4).toString();
-    String sdt = model.getValueAt(row, 5).toString();
-    String email = model.getValueAt(row, 6).toString();
-    String trangThai = model.getValueAt(row, 7).toString();
-    String chucVu = model.getValueAt(row, 8).toString();
-
-    // Đổ dữ liệu lên các trường nhập liệu
-    txtmanv.setText(maNV);
-    txthoten.setText(tenNV);
-    txtngaysinh.setText(ngaySinh);
-    txtdiachi.setText(diaChi);
-    txtsdt.setText(sdt);
-    txtemail.setText(email);
-
-    // Giới tính
-    if ("Nam".equalsIgnoreCase(gioiTinh)) {
-        rdoNam.setSelected(true);
-    } else {
-        rdoNu.setSelected(true);
-    }
-
-    // Chức vụ
-    if ("Quản lý".equalsIgnoreCase(chucVu) || "quan_ly".equalsIgnoreCase(chucVu)) {
-        rdoQuanly.setSelected(true);
-    } else {
-        rdoNhanVien.setSelected(true);
-    }
-
-    // Trạng thái
-    if ("Hoạt động".equalsIgnoreCase(trangThai)) {
-        rdohoatdong.setSelected(true);
-    } else {
-        rdonghiviec.setSelected(true);
-    }
+    
 }
 
 
@@ -568,70 +513,16 @@ private DefaultTableModel defaultTableModel;
 
     private void btnxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxoaActionPerformed
 
-    int row = tblDSnhanvien.getSelectedRow();
-    if (row >= 0) {
-        String maNV = txtmanv.getText();
-
-        // XÓA TRƯỚC TÀI KHOẢN LIÊN QUAN
-        nvDAO.deleteByNhanVienMaNV(maNV);
-
-        // SAU ĐÓ XÓA NHÂN VIÊN
-        nvDAO.deleteById(maNV);
-
-        fillTable();
-        if (tblDSnhanvien.getRowCount() > 0) {
-            tblDSnhanvien.setRowSelectionInterval(0, 0);
-            loadDataToForm(0);
-        } else {
-            // Xóa trắng form
-            txtmanv.setText("");
-            txthoten.setText("");
-            txtngaysinh.setText("");
-            txtdiachi.setText("");
-            txtsdt.setText("");
-            txtemail.setText("");
-            rdoNam.setSelected(true);
-            rdoNhanVien.setSelected(true);
-            rdohoatdong.setSelected(true);
-        }
-    }
+    
 
     }//GEN-LAST:event_btnxoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        int row = tblDSnhanvien.getSelectedRow();
-        if (row >= 0) {
-            nhanvien nv = nvDAO.findById(txtmanv.getText());
-            nv.setTen_nv(txthoten.getText());
-            nv.setGioi_tinh(rdoNam.isSelected() ? "Nam" : "Nữ");
-            nv.setNgay_sinh(txtngaysinh.getText());
-            nv.setDia_chi(txtdiachi.getText());
-            nv.setSdt(txtsdt.getText());
-            nv.setEmail(txtemail.getText());
-            nv.setTrang_thai(rdohoatdong.isSelected() ? 1 : 0);
-            nv.setChuc_vu(rdoQuanly.isSelected() ? "Quản lý" : "Nhân viên");
-            nvDAO.update(nv);
-            fillTable();
-            tblDSnhanvien.setRowSelectionInterval(row, row);
-            loadDataToForm(row);
-        }
+      
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        nhanvien nv = new nhanvien();
-        nv.setMa_nv(txtmanv.getText());
-        nv.setTen_nv(txthoten.getText());
-        nv.setGioi_tinh(rdoNam.isSelected() ? "Nam" : "Nữ");
-        nv.setNgay_sinh(txtngaysinh.getText());
-        nv.setDia_chi(txtdiachi.getText());
-        nv.setSdt(txtsdt.getText());
-        nv.setEmail(txtemail.getText());
-        nv.setTrang_thai(rdohoatdong.isSelected() ? 1 : 0);
-        nv.setChuc_vu(rdoQuanly.isSelected() ? "Quản lý" : "Nhân viên");
-        nvDAO.create(nv);
-        fillTable();
-        tblDSnhanvien.setRowSelectionInterval(tblDSnhanvien.getRowCount() - 1, tblDSnhanvien.getRowCount() - 1);
-        loadDataToForm(tblDSnhanvien.getRowCount() - 1);
+      
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void txtngaysinhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtngaysinhActionPerformed
@@ -639,16 +530,7 @@ private DefaultTableModel defaultTableModel;
     }//GEN-LAST:event_txtngaysinhActionPerformed
 
     private void btnlammoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlammoiActionPerformed
-        // TODO add your handling code here:
-        txtmanv.setText("");
-        txthoten.setText("");
-        txtngaysinh.setText("");
-        txtdiachi.setText("");
-        txtsdt.setText("");
-        txtemail.setText("");
-        rdoNam.setSelected(true); // Giới tính mặc định
-        rdoNhanVien.setSelected(true); // Chức vụ mặc định
-        tblDSnhanvien.clearSelection(); // Bỏ chọn trên bảng
+       
     }//GEN-LAST:event_btnlammoiActionPerformed
 
     private void rdohoatdongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdohoatdongActionPerformed

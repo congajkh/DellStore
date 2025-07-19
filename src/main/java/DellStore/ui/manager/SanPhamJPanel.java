@@ -11,10 +11,12 @@ import DellStore.dao.impl.hangDAOImpl;
 import DellStore.dao.impl.ocungDAOImpl;
 import DellStore.dao.impl.ramDAOImpl;
 import DellStore.dao.impl.sanphamDAO;
+import DellStore.entity.SanPhamChiTietDTO;
 import DellStore.entity.card;
 import DellStore.entity.chitietsanpham;
 import DellStore.entity.cpu;
 import DellStore.entity.hang;
+import DellStore.entity.nhanvien;
 import DellStore.entity.ocung;
 import DellStore.entity.ram;
 import DellStore.entity.sanpham;
@@ -28,6 +30,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,11 +40,61 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SanPhamJPanel extends javax.swing.JPanel {
 sanphamDAO daosp = new sanphamDAO();
+chitietsanphamDAO ctDAO = new chitietsanphamDAO();
     /**
      * Creates new form SanPhamJPanel
      */
     public SanPhamJPanel() {
         initComponents();
+        txt_timkiemsanpham.getDocument().addDocumentListener(new DocumentListener() {
+    public void insertUpdate(DocumentEvent e) { timKiemTuDong(); }
+    public void removeUpdate(DocumentEvent e) { timKiemTuDong(); }
+    public void changedUpdate(DocumentEvent e) { timKiemTuDong(); }
+    private void timKiemTuDong() {
+        String keyword = txt_timkiemsanpham.getText().trim().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) tbl_bangsanpham.getModel();
+        model.setRowCount(0);
+        List<sanpham> list = daosp.findAll();
+        int stt = 1;
+        for (sanpham entity : list) {
+            if (keyword.isEmpty() || entity.getTen().toLowerCase().contains(keyword)) {
+                model.addRow(new Object[]{
+                    stt++,
+                    entity.getTen(),
+                    entity.getMasp()
+                });
+            }
+        }
+    }
+});
+//txt_timkiemdssanpham.getDocument().addDocumentListener(new DocumentListener() {
+//    public void insertUpdate(DocumentEvent e) { timKiemTuDong(); }
+//    public void removeUpdate(DocumentEvent e) { timKiemTuDong(); }
+//    public void changedUpdate(DocumentEvent e) { timKiemTuDong(); }
+//    private void timKiemTuDong() {
+//        String keyword = txt_timkiemdssanpham.getText().trim().toLowerCase();
+//        DefaultTableModel model = (DefaultTableModel) tbl_bangDSSanPham.getModel();
+//        model.setRowCount(0);
+//        List<SanPhamChiTietDTO> list = daosp.findAllChiTiet(); // Lấy danh sách chi tiết sản phẩm
+//        int stt = 1;
+//        for (SanPhamChiTietDTO entity : list) {
+//            if (keyword.isEmpty() || entity.getTenSanPham().toLowerCase().contains(keyword)) {
+//                model.addRow(new Object[]{
+//                    stt++,
+//                    entity.getTenSanPham(),
+//                    entity.getTenRam(),
+//                    entity.getTenCpu(),
+//                    entity.getTenOCung(),
+//                    entity.getTenCard(),
+//                    entity.getTenHang(),
+//                    entity.getSerial(),
+//                    entity.getGiaBan(),
+//                    entity.getTrangThai()
+//                });
+//            }
+//        }
+//    }
+//});
          DefaultTableModel model = new DefaultTableModel();
    model.setColumnIdentifiers(new Object[]{
     "STT", "Tên sản phẩm", "ram", "Cpu", "Ỏ Cứng", "card", "hãng", "Serial", "Giá bán", "Trạng thái"
@@ -128,6 +182,12 @@ sanphamDAO daosp = new sanphamDAO();
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel4.setText("Tên sản phẩm:");
+
+        txt_timkiemsanpham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_timkiemsanphamActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel2.setText("Tìm kiếm:");
@@ -598,7 +658,7 @@ sanphamDAO daosp = new sanphamDAO();
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -771,6 +831,10 @@ private void loadTableSanPham() {
     private void txt_serialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_serialActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_serialActionPerformed
+
+    private void txt_timkiemsanphamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_timkiemsanphamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_timkiemsanphamActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

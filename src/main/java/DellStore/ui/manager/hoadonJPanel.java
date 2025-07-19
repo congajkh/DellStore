@@ -9,7 +9,13 @@ import DellStore.dao.impl.ChiTietHoaDonDAO;
 import DellStore.entity.ChiTietHoaDonDTO;
 import DellStore.entity.HoaDonDTO;
 import DellStore.entity.hoadon;
+import DellStore.utils.XJdbc;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +31,15 @@ public class hoadonJPanel extends javax.swing.JPanel {
         initComponents();
         loadHoaDonTable();
     }
+    private int getIdHoaDonByMa(String maHoaDon) {
+    String sql = "SELECT id FROM hoa_don WHERE ma = ?";
+    try (ResultSet rs = DellStore.utils.XJdbc.executeQuery(sql, maHoaDon)) {
+        if (rs.next()) return rs.getInt("id");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
     
 private void loadHoaDonTable() {
     DefaultTableModel model = (DefaultTableModel) tbl_dshoadon.getModel();
@@ -40,6 +55,29 @@ private void loadHoaDonTable() {
             hd.getTen_nhan_vien(),
             hd.getTrang_thai() == 1 ? "Đã thanh toán" : "Chưa thanh toán"
         });
+    }
+}
+private void loadTableHoaDonChiTiet(int hoaDonId) {
+    DefaultTableModel model = (DefaultTableModel) tbl_hoadonchitiet.getModel();
+    model.setRowCount(0);
+    String sql = "SELECT * FROM vw_ct_hoa_don_display WHERE hoa_don_id = ?";
+    try (ResultSet rs = DellStore.utils.XJdbc.executeQuery(sql, hoaDonId)) {
+        int stt = 1;
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                stt++,
+                rs.getString("hoa_don_id"),
+                rs.getString("ten_san_pham"),
+                rs.getBigDecimal("don_gia"),
+                rs.getString("ma_serial"),
+                rs.getInt("so_luong"),
+                rs.getBigDecimal("tien_khuyen_mai"),
+                rs.getBigDecimal("tong_tien")
+            });
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải chi tiết hóa đơn: " + e.getMessage());
     }
 }
     /**
@@ -493,28 +531,13 @@ private void loadHoaDonTable() {
     }//GEN-LAST:event_txt_tienkhachduaActionPerformed
 
     private void tbl_dshoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_dshoadonMouseClicked
-     int selectedRow = tbl_dshoadon.getSelectedRow();
+   int selectedRow = tbl_dshoadon.getSelectedRow();
     if (selectedRow != -1) {
-        // Thêm debug log
-        System.out.println("Row selected: " + selectedRow);
-        
-        // Lấy thông tin từ dòng được chọn
         String maHoaDon = tbl_dshoadon.getValueAt(selectedRow, 0).toString();
-        String ngayTao = tbl_dshoadon.getValueAt(selectedRow, 1).toString();
-        String tenNV = tbl_dshoadon.getValueAt(selectedRow, 2).toString();
-        String trangThai = tbl_dshoadon.getValueAt(selectedRow, 3).toString();
-        
-        // Debug log
-        System.out.println("Mã hóa đơn được chọn: " + maHoaDon);
-        
-        // Hiển thị thông tin cơ bản lên form
-        txt_mahoadon.setText(maHoaDon);
-        txt_ngaytao.setText(ngayTao);
-        txt_tennv.setText(tenNV);
-        txt_tinhtrang.setText(trangThai);
-        
-        // Lấy thông tin chi tiết từ database
-        loadChiTietHoaDon(maHoaDon);
+        int hoaDonId = getIdHoaDonByMa(maHoaDon);
+        if (hoaDonId != -1) {
+            loadTableHoaDonChiTiet(hoaDonId);
+        }
     }
     }//GEN-LAST:event_tbl_dshoadonMouseClicked
 

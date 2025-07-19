@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package DellStore.entity;
+package DellStore.dao.impl;
 
 /**
  *
- * @author docon
+ * @author orin
  */
-public class chitiethoadon {
+public class NewClass {
     
 }
