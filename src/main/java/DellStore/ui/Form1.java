@@ -103,8 +103,8 @@ public class Form1 extends javax.swing.JFrame implements formController {
         btn_hoadon = new javax.swing.JButton();
         btn_khuyenmai = new javax.swing.JButton();
         btn_khachhang = new javax.swing.JButton();
-        btn_thongke = new javax.swing.JButton();
         btn_thoat = new javax.swing.JButton();
+        btn_thongke = new javax.swing.JButton();
         pnlCenter = new javax.swing.JPanel();
         pnlCTop = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -221,22 +221,6 @@ public class Form1 extends javax.swing.JFrame implements formController {
         });
         pnlSlide.add(btn_khachhang);
 
-        btn_thongke.setBackground(new java.awt.Color(14, 36, 49));
-        btn_thongke.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btn_thongke.setForeground(new java.awt.Color(255, 255, 255));
-        btn_thongke.setText("Thống  Kê");
-        btn_thongke.setBorderPainted(false);
-        btn_thongke.setContentAreaFilled(false);
-        btn_thongke.setFocusPainted(false);
-        btn_thongke.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btn_thongke.setPreferredSize(new java.awt.Dimension(180, 70));
-        btn_thongke.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_thongkeActionPerformed(evt);
-            }
-        });
-        pnlSlide.add(btn_thongke);
-
         btn_thoat.setBackground(new java.awt.Color(14, 36, 49));
         btn_thoat.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btn_thoat.setForeground(new java.awt.Color(255, 255, 255));
@@ -252,6 +236,22 @@ public class Form1 extends javax.swing.JFrame implements formController {
             }
         });
         pnlSlide.add(btn_thoat);
+
+        btn_thongke.setBackground(new java.awt.Color(14, 36, 49));
+        btn_thongke.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn_thongke.setForeground(new java.awt.Color(255, 255, 255));
+        btn_thongke.setText("Thống  Kê");
+        btn_thongke.setBorderPainted(false);
+        btn_thongke.setContentAreaFilled(false);
+        btn_thongke.setFocusPainted(false);
+        btn_thongke.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_thongke.setPreferredSize(new java.awt.Dimension(180, 70));
+        btn_thongke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_thongkeActionPerformed(evt);
+            }
+        });
+        pnlSlide.add(btn_thongke);
 
         pnlRoot.add(pnlSlide, java.awt.BorderLayout.WEST);
 
@@ -333,12 +333,6 @@ public class Form1 extends javax.swing.JFrame implements formController {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_thongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongkeActionPerformed
-        // TODO add your handling code here:
-this.showThongKeJPanel(this);
-
-    }//GEN-LAST:event_btn_thongkeActionPerformed
-
     private void btn_khachhangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khachhangActionPerformed
         // TODO add your handling code here:
         this.showKhachHangJPanel(this);
@@ -379,6 +373,11 @@ this.showThongKeJPanel(this);
         // TODO add your handling code here:
         this.showHoaDonJPanel(this);
     }//GEN-LAST:event_btn_hoadonActionPerformed
+
+    private void btn_thongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thongkeActionPerformed
+        // TODO add your handling code here:
+        this.showThongKeJPanel(this);
+    }//GEN-LAST:event_btn_thongkeActionPerformed
 
     /**
      * @param args the command line arguments

@@ -199,17 +199,7 @@ public class lloginJDialog1 extends javax.swing.JDialog {
     }//GEN-LAST:event_txt_passwordActionPerformed
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-     String user = txt_tendangnhap.getText().trim();
-    String pass = new String(txt_password.getPassword()).trim();
-
-    DellStore.dao.impl.TaiKhoanDAO dao = new DellStore.dao.impl.TaiKhoanDAO();
-    if (dao.checkLogin(user, pass)) {
-        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-        loggedIn = true;
-        dispose(); // Thoát khỏi dialog
-    } else {
-        JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!");
-    }
+     
     }//GEN-LAST:event_btn_loginActionPerformed
 
     /**
