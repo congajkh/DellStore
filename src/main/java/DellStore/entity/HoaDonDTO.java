@@ -5,26 +5,29 @@
 package DellStore.entity;
 
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
  * @author docon
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Getter
+@Setter
+@Data
 public class HoaDonDTO {
+  private int id;
  private String ma_hoa_don;
     private Date ngay_tao;
     private String ten_nhan_vien;
-    private int trang_thai;
-
-    public HoaDonDTO(String ma_hoa_don, Date ngay_tao, String ten_nhan_vien, int trang_thai) {
-        this.ma_hoa_don = ma_hoa_don;
-        this.ngay_tao = ngay_tao;
-        this.ten_nhan_vien = ten_nhan_vien;
-        this.trang_thai = trang_thai;
-    }
-
-    public String getMa_hoa_don() { return ma_hoa_don; }
-    public Date getNgay_tao() { return ngay_tao; }
-    public String getTen_nhan_vien() { return ten_nhan_vien; }
-    public int getTrang_thai() { return trang_thai; }
+    private int trang_thai;   
 }

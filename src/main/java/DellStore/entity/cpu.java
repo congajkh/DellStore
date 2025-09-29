@@ -4,22 +4,16 @@
  */
 package DellStore.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
+/**
+ *
+ * @author nguyendangtuan
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Getter
-@Setter
 @Data
-public class cpu {
+public class Cpu {
     int id;
     String ten;
     String toc_do;

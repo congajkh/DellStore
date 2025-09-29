@@ -4,19 +4,21 @@
  */
 package DellStore.utils;
 
-import DellStore.entity.nhanvien;
+import DellStore.entity.NhanVien;
 
 /**
  *
  * @author PC
-// */
-//public class XAuth {
-//       public static nhanvien user = nhanvien.builder() 
-//            .username("user1@gmail.com") 
-//            .password("123") 
-//            .enabled(true) 
-//            .manager(true) 
-//            .fullname("Nguyễn Văn Tèo") 
-//            .photo("trump.png") 
-//            .build(); // biến user này sẽ được thay thế sau khi đăng nhập
-//}
+ */
+public class XAuth {
+  public static NhanVien user = null;
+   public static boolean isLogin() {
+        return user != null;
+    }
+   
+    public static void clear() {
+        user = null;
+    }
+    
+    
+}

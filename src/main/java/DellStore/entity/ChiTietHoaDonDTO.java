@@ -22,12 +22,16 @@ import lombok.ToString;
 @Setter
 @Data
 public class ChiTietHoaDonDTO {
-    private int id;
     private String maHoaDon;
     private String tenSanPham;
     private BigDecimal donGia;
     private int soLuong;
     private BigDecimal tienKhuyenMai;
     private BigDecimal tongTien;
-    private String maSerial;  
+    private String tenHinhThuc;
+    private int san_pham_id;
+    private int cpu_id;
+    private int ram_id;
+    private int gpu_id;
+    private int ssd_id;
 }

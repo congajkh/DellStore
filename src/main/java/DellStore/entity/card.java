@@ -4,27 +4,22 @@
  */
 package DellStore.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
+/**
+ *
+ * @author nguyendangtuan
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Getter
-@Setter
 @Data
-public class card {
-    int id;
-    String ten;
-    String loai;
-    int trang_thai; 
-      @Override
+public class Card {
+    private int id;
+    private String ten;
+    private String loai;
+    private int trang_thai;
+
+    @Override
     public String toString() {
         return ten;
     }

@@ -4,26 +4,20 @@
  */
 package DellStore.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
+/**
+ *
+ * @author nguyendangtuan
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Getter
-@Setter
 @Data
-public class hang {
-    int id;
-    String ten;
-    int trang_thai;
-        @Override
+public class Hang {
+    private int id;
+    private String ten;
+    
+    @Override
     public String toString() {
         return ten;
     }

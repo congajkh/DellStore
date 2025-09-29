@@ -1,50 +1,90 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DellStore.dao.impl;
 
-import DellStore.entity.cpu;
+import DellStore.entity.Cpu;
 import DellStore.utils.XJdbc;
-import DellStore.utils.XQuery;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-/**
- *
- * @author docon
- */
 public class cpuDAOImpl {
-    String insertSql = "INSERT INTO cpu (ten, toc_do, loai,trang_thai) VALUES (?, ?, ?,?)";
-    String deleteSql = "DELETE FROM cpu WHERE id=?";
-    String findAllSql = "SELECT * FROM cpu";
-    String findByIdSql = "SELECT * FROM cpu WHERE id=?";
-
-    public cpu insert(cpu entity) {
-        XJdbc.executeUpdate(insertSql, entity.getTen(), entity.getToc_do(),entity.getLoai(), entity.getTrang_thai());
-        return entity;
+    public List<Cpu> findAll() {
+        List<Cpu> list = new ArrayList<>();
+        String sql = "SELECT * FROM cpu";
+        try (ResultSet rs = XJdbc.executeQuery(sql)) {
+            while (rs.next()) {
+                Cpu entity = Cpu.builder()
+                    .id(rs.getInt("id"))
+                    .ten(rs.getString("ten"))
+                    .toc_do(rs.getString("toc_do"))
+                    .loai(rs.getString("loai"))
+                    .trang_thai(rs.getInt("trang_thai"))
+                    .build();
+                list.add(entity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 
- public void update(cpu entity) {
-    String sql = "UPDATE cpu SET ten=?, toc_do=?, loai=?, trang_thai=? WHERE id=?";
-    XJdbc.executeUpdate(sql,
-        entity.getTen(),
-        entity.getToc_do(),
-        entity.getLoai(),
-        entity.getTrang_thai(),
-        entity.getId()
-    );
+    public void insert(Cpu entity) {
+        String sql = "INSERT INTO cpu (ten, toc_do, loai, trang_thai) VALUES (?, ?, ?, ?)";
+        XJdbc.executeUpdate(sql, entity.getTen(), entity.getToc_do(), entity.getLoai(), entity.getTrang_thai());
+    }
+
+    public void update(Cpu entity) {
+        String sql = "UPDATE cpu SET ten=?, toc_do=?, loai=?, trang_thai=? WHERE id=?";
+        XJdbc.executeUpdate(sql, entity.getTen(), entity.getToc_do(), entity.getLoai(), entity.getTrang_thai(), entity.getId());
+    }
+    public List<Cpu> getAllCPU() {
+    List<Cpu> list = new ArrayList<>();
+    String sql = "SELECT id, ten, toc_do,loai, trang_thai FROM cpu"; // hoặc tên bảng thật
+    try (Connection conn = XJdbc.openConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            Cpu o = new Cpu(
+                rs.getInt("id"),
+                rs.getString("ten"),
+                    rs.getString("toc_do"),
+                rs.getString("loai"),
+                rs.getInt("trang_thai")
+            );
+            list.add(o);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return list;
 }
-
-
-    public void deleteById(int id) {
-        XJdbc.executeUpdate(deleteSql, id);
+    public int getIdByTen(String ten) {
+    String sql = "SELECT id FROM cpu WHERE ten = ?";
+    try (Connection con = XJdbc.openConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, ten);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("id");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+     public static String getTenById(int id) {
+        String sql = "SELECT ten FROM cpu WHERE id = ?";
+        try (Connection cn = XJdbc.openConnection();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("ten");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public List<cpu> findAll() {
-        return XQuery.getBeanList(cpu.class, findAllSql);
-    }
-
-    public cpu findById(int id) {
-        return XQuery.getSingleBean(cpu.class, findByIdSql, id);
-    }
 }

@@ -4,22 +4,16 @@
  */
 package DellStore.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
+/**
+ *
+ * @author nguyendangtuan
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Getter
-@Setter
 @Data
-public class ocung {
+public class Ocung {
 
     private int id;
     private String ten;
@@ -29,6 +23,6 @@ public class ocung {
 
     @Override
     public String toString() {
-        return dung_luong; // hoặc: return dungLuong + " " + loai;
+        return dung_luong; 
     }
 }

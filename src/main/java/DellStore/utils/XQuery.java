@@ -2,10 +2,12 @@ package DellStore.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+//import poly.cafe.entity.User;
 
 /**
  * Lớp tiện ích hỗ trợ truy vấn và chuyển đổi sang đối tượng
@@ -66,28 +68,60 @@ public class XQuery {
      * @throws RuntimeException lỗi truy vấn
      */
     private static <B> B readBean(ResultSet resultSet, Class<B> beanClass) throws Exception {
-        B bean = beanClass.getDeclaredConstructor().newInstance();
-        Method[] methods = beanClass.getDeclaredMethods();
-        for(Method method: methods){
-            String name = method.getName();
-            if (name.startsWith("set") && method.getParameterCount() == 1) {
-                try {
-                    Object value = resultSet.getObject(name.substring(3));
-                    method.invoke(bean, value);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SQLException e) {
-                    System.out.printf("+ Column '%s' not found!\r\n", name.substring(3));
+    B bean = beanClass.getDeclaredConstructor().newInstance();
+    Method[] methods = beanClass.getDeclaredMethods();
+
+    for (Method method : methods) {
+        String name = method.getName();
+        if (name.startsWith("set") && method.getParameterCount() == 1) {
+            String columnName = name.substring(3);
+            try {
+                Object value = resultSet.getObject(columnName);
+                Class<?> paramType = method.getParameterTypes()[0];
+
+                // Xử lý BigDecimal tự động
+                if (value instanceof BigDecimal) {
+                    if (paramType == Double.class || paramType == double.class) {
+                        value = ((BigDecimal) value).doubleValue();
+                    } else if (paramType == Float.class || paramType == float.class) {
+                        value = ((BigDecimal) value).floatValue();
+                    } else if (paramType == Integer.class || paramType == int.class) {
+                        value = ((BigDecimal) value).intValue();
+                    }
                 }
+
+                // Ép Date → String nếu setter cần String
+                if (value instanceof java.sql.Date && paramType == String.class) {
+                    value = value.toString(); // yyyy-MM-dd
+                }
+
+                // Ép Timestamp → String nếu setter cần String
+                if (value instanceof java.sql.Timestamp && paramType == String.class) {
+                    value = value.toString().substring(0, 10); // yyyy-MM-dd
+                }
+
+                method.invoke(bean, value);
+
+            } catch (IllegalAccessException e) {
+                System.out.printf("'%s': method does not have access!\r\n", columnName);
+            } catch (IllegalArgumentException e) {
+                System.out.printf("'%s': illegal argument!\r\n", columnName);
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                System.out.printf("'%s': exception thrown by invoked method!\r\n", columnName);
+            } catch (SQLException e) {
+                System.out.printf("Error at: '%s'!!!\r\n", columnName);
+                e.printStackTrace();
             }
         }
-        return bean;
     }
-    
-    // Demo sử dụng
-//    public static void main(String[] args) {
+    return bean;
+}
+    public static void main(String[] args) {
 //        demo1();
 //        demo2();
-//    }
-//
+    }
+
 //    private static void demo1() {
 //        String sql = "SELECT * FROM Users WHERE Username=? AND Password=?";
 //        User user = XQuery.getSingleBean(User.class, sql, "NghiemN", "123456");

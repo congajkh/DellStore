@@ -3,30 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DellStore.entity;
-
+import java.math.BigDecimal;
 import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.*;
+/**
+ *
+ * @author nguyendangtuan
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Getter
-@Setter
 @Data
 
-public class khuyenmai {
-     private int id;
+public class KhuyenMai {
+    private int id;
     private String ma_km;
     private String ten_km;
-    private String loai_km;         // "%" hoặc "tiền mặt"
-    private double gia_tri;
+    private String loai_giam;         // "%" hoặc "tiền mặt"
+    private BigDecimal giam_gia;
     private Date ngay_bat_dau;
     private Date ngay_ket_thuc;
     private int trang_thai;

@@ -1,43 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DellStore.dao.impl;
 
-import DellStore.entity.hang;
+import DellStore.entity.Hang;
 import DellStore.utils.XJdbc;
-import DellStore.utils.XQuery;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.ResultSet;
 
-/**
- *
- * @author docon
- */
 public class hangDAOImpl {
-     String insertSql = "INSERT INTO hang (ten, trang_thai) VALUES (?, ?)";
-    String updateSql = "UPDATE hang SET ten=?, trang_thai=? WHERE id=?";
-    String deleteSql = "DELETE FROM hang WHERE id=?";
-    String findAllSql = "SELECT * FROM hang";
-    String findByIdSql = "SELECT * FROM hang WHERE id=?";
-
-    public hang insert(hang entity) {
-        XJdbc.executeUpdate(insertSql, entity.getTen(), entity.getTrang_thai());
-        return entity;
+    
+    Connection conn = XJdbc.openConnection();
+    public List<Hang> findAll() {
+        List<Hang> list = new ArrayList<>();
+        String sql = "SELECT * FROM hang";
+        try (ResultSet rs = XJdbc.executeQuery(sql)) {
+            while (rs.next()) {
+                Hang entity = Hang.builder()
+                    .id(rs.getInt("id"))
+                    .ten(rs.getString("ten"))
+                    .build();
+                list.add(entity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+     public int getIdByTen(String tenHang) {
+        String sql = "SELECT id FROM hang WHERE ten = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenHang);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
-    public void update(hang entity) {
-        XJdbc.executeUpdate(updateSql, entity.getTen(), entity.getTrang_thai(), entity.getId());
-    }
-
-    public void deleteById(int id) {
-        XJdbc.executeUpdate(deleteSql, id);
-    }
-
-    public List<hang> findAll() {
-        return XQuery.getBeanList(hang.class, findAllSql);
-    }
-
-    public hang findById(int id) {
-        return XQuery.getSingleBean(hang.class, findByIdSql, id);
+    public String getTenById(int id) {
+        String sql = "SELECT ten FROM hang WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("ten");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
